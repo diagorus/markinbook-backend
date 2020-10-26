@@ -1,6 +1,7 @@
 package com.thefuh.markinbook.database.tables.schools.disciplines
 
 import com.thefuh.markinbook.database.tables.schools.SchoolEntity
+import org.jetbrains.exposed.sql.SizedIterable
 
 class DisciplinesRepository {
 
@@ -11,8 +12,8 @@ class DisciplinesRepository {
         }
     }
 
-    fun getAll(): List<DisciplineEntity> {
-        return DisciplineEntity.all().toList()
+    fun getAll(): SizedIterable<DisciplineEntity> {
+        return DisciplineEntity.all()
     }
 
     fun getById(id: Int): DisciplineEntity? {

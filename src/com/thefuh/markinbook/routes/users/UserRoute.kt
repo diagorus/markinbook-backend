@@ -61,10 +61,10 @@ fun Route.users(
             ?: return@post call.respond(HttpStatusCode.Unauthorized, "Missing Fields")
         val password = parameters[UsersLocation.SignIn.PASSWORD]
             ?: return@post call.respond(HttpStatusCode.Unauthorized, "Missing Fields")
-        val typeString = parameters[UsersLocation.SignIn.TYPE]
+        val roleString = parameters[UsersLocation.SignIn.ROLE]
             ?: return@post call.respond(HttpStatusCode.Unauthorized, "Missing Fields")
 
-        val role = Role.valueOf(typeString)
+        val role = Role.valueOf(roleString)
 
         val hash = hashFunction(password)
         try {

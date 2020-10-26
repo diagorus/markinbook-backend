@@ -1,6 +1,6 @@
 package com.thefuh.markinbook.database.tables.schools.students
 
-import com.thefuh.markinbook.database.tables.GroupsTable
+import com.thefuh.markinbook.database.tables.schools.students.groups.GroupsTable
 import org.jetbrains.exposed.dao.id.IntIdTable
 
 object StudentsTable : IntIdTable() {

@@ -9,5 +9,5 @@ class DisciplineEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<DisciplineEntity>(DisciplinesTable)
 
     var title by DisciplinesTable.title
-    var school by SchoolEntity referencedOn DisciplinesTable.school
+    var school by SchoolEntity referencedOn DisciplinesTable.schoolId
 }

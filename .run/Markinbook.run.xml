@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Markinbook" type="JetRunConfigurationType">
+    <module name="mark-in-book-backend.main" />
+    <option name="VM_PARAMETERS" value="" />
+    <option name="PROGRAM_PARAMETERS" value="" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="$USER_HOME$/.jdks/openjdk-14.0.2-1" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <option name="MAIN_CLASS_NAME" value="com.thefuh.markinbook.ApplicationKt" />
+    <option name="WORKING_DIRECTORY" value="" />
+    <envs>
+      <env name="JDBC_DRIVER" value="org.postgresql.Driver" />
+      <env name="JDBC_DATABASE_URL" value="jdbc:postgresql:markinbook?user\=postgres" />
+      <env name="SECRET_KEY" value="898748674728934843" />
+      <env name="JWT_SECRET" value="898748674728934843" />
+      <env name="DB_PASSWORD" value="12321" />
+      <env name="DB_USER" value="postgres" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val logback_version: String by project
 val ktor_version: String by project
 val kotlin_version: String by project
@@ -43,7 +45,23 @@ dependencies {
     implementation("com.zaxxer:HikariCP:$hikaricp_version")
 
     implementation("ch.qos.logback:logback-classic:$logback_version")
+
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+
+    testImplementation(platform("org.junit:junit-bom:5.7.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
+// config JVM target to 1.8 for kotlin compilation tasks
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 kotlin.sourceSets["main"].kotlin.srcDirs("src")

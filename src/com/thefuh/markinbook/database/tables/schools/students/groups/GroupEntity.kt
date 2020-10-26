@@ -1,6 +1,5 @@
 package com.thefuh.markinbook.database.tables.schools.students.groups
 
-import com.thefuh.markinbook.database.tables.GroupsTable
 import com.thefuh.markinbook.database.tables.schools.students.StudentEntity
 import com.thefuh.markinbook.database.tables.schools.students.StudentsTable
 import org.jetbrains.exposed.dao.IntEntity

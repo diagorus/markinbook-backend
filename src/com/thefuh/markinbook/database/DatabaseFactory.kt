@@ -1,7 +1,7 @@
 package com.thefuh.markinbook.database
 
-import com.thefuh.markinbook.database.tables.*
 import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesTable
+import com.thefuh.markinbook.database.tables.schools.students.groups.GroupsTable
 import com.thefuh.markinbook.database.tables.schools.students.homeworks.HomeworksTable
 import com.thefuh.markinbook.database.tables.schools.students.homeworks.tasks.TasksTable
 import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonsTable
@@ -20,7 +20,14 @@ object DatabaseFactory {
         Database.connect(hikari())
 
         transaction {
-//            exec("CREATE IF NOT TYPE Role AS ENUM ('TEACHER', 'STUDENT', 'PARENT');")
+//            exec("CREATE TYPE Role AS ENUM ('TEACHER', 'STUDENT', 'PARENT');")
+            exec(
+                "DO \$\$ BEGIN\n" +
+                    "    CREATE TYPE Role AS ENUM ('TEACHER', 'STUDENT', 'PARENT');\n" +
+                    "EXCEPTION\n" +
+                    "    WHEN duplicate_object THEN null;\n" +
+                    "END \$\$;"
+            )
 
             SchemaUtils.create(UsersTable)
             SchemaUtils.create(TasksTable)

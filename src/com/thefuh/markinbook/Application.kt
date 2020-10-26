@@ -8,9 +8,16 @@ import com.thefuh.markinbook.data.User
 import com.thefuh.markinbook.database.DatabaseFactory
 import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesRepository
 import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
+import com.thefuh.markinbook.database.tables.schools.students.StudentsRepository
+import com.thefuh.markinbook.database.tables.schools.students.groups.GroupsRepository
+import com.thefuh.markinbook.database.tables.schools.students.homeworks.HomeworksRepository
+import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonsRepository
 import com.thefuh.markinbook.database.tables.users.UsersRepository
 import com.thefuh.markinbook.routes.schools.disciplines.disciplines
 import com.thefuh.markinbook.routes.schools.schools
+import com.thefuh.markinbook.routes.schools.students.homeworks.homeworks
+import com.thefuh.markinbook.routes.schools.students.lessons.lessons
+import com.thefuh.markinbook.routes.schools.students.students
 import com.thefuh.markinbook.routes.users.toUser
 import com.thefuh.markinbook.routes.users.users
 import io.ktor.application.*
@@ -75,9 +82,19 @@ fun Application.module() {
     val schoolRepository = SchoolsRepository()
     val disciplineRepository = DisciplinesRepository()
 
+    val studentsRepository = StudentsRepository()
+    val lessonsRepository = LessonsRepository()
+    val groupsRepository = GroupsRepository()
+    val homeworksRepository = HomeworksRepository()
+
     routing {
         users(usersRepository, jwtService, ::hash)
         schools(schoolRepository)
         disciplines(schoolRepository, disciplineRepository)
+        students(studentsRepository)
+        lessons(studentsRepository,lessonsRepository, groupsRepository, disciplineRepository)
+        homeworks(lessonsRepository, homeworksRepository)
+//        groups
+//        tasks
     }
 }

@@ -11,11 +11,11 @@ import org.jetbrains.exposed.dao.id.EntityID
 class LessonEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<LessonEntity>(LessonsTable)
 
-    val student by StudentEntity referencedOn LessonsTable.studentId
-    val group by GroupEntity referencedOn LessonsTable.groupId
-    val discipline by DisciplineEntity referencedOn LessonsTable.disciplineId
-    val start by LessonsTable.start
-    val durationInMinutes by LessonsTable.durationInMinutes
-    val homework by HomeworkEntity optionalReferencedOn LessonsTable.homeworkId
-    val mark by LessonsTable.mark
+    var student by StudentEntity referencedOn LessonsTable.studentId
+    var group by GroupEntity referencedOn LessonsTable.groupId
+    var discipline by DisciplineEntity referencedOn LessonsTable.disciplineId
+    var start by LessonsTable.start
+    var durationInMinutes by LessonsTable.durationInMinutes
+    var homework by HomeworkEntity optionalReferencedOn LessonsTable.homeworkId
+    var mark by LessonsTable.mark
 }

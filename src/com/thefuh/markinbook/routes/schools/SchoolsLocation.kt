@@ -50,11 +50,33 @@ class SchoolsLocation {
         data class Student(val students: Students, val studentId: Int) {
 
             @KtorExperimentalLocationsAPI
-            @Location("/classes")
+            @Location("/lessons")
             data class Lessons(val student: Student) {
 
                 @Location("/add")
-                data class Add(val lessons: Lessons)
+                data class Add(val lessons: Lessons) {
+                    companion object {
+                        const val ARG_DISCIPLINE_ID = "disciplineId"
+                        const val ARG_GROUP_ID = "groupId"
+                        const val ARG_START = "start"
+                        const val ARG_DURATION_IN_MINUTES = "durationInMinutes"
+                    }
+                }
+
+                @Location("/{lessonId}")
+                data class Lesson(val lessons: Lessons, val lessonId: Int) {
+
+                    @Location("/homeworks")
+                    data class Homeworks(val lesson: Lesson) {
+
+                        @Location("/add")
+                        data class Add(val homeworks: Homeworks) {
+                            companion object {
+
+                            }
+                        }
+                    }
+                }
             }
         }
     }

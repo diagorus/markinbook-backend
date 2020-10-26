@@ -1,8 +1,10 @@
 package com.thefuh.markinbook.database.tables.schools.students
 
+import org.jetbrains.exposed.sql.SizedIterable
+
 class StudentsRepository {
-    fun getAll(): List<StudentEntity> {
-        return StudentEntity.all().toList()
+    fun getAll(): SizedIterable<StudentEntity> {
+        return StudentEntity.all()
     }
 
     fun add(firstName: String, lastName: String, middleName: String): StudentEntity {

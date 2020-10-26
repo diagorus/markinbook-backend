@@ -8,6 +8,7 @@ import io.ktor.util.pipeline.*
 
 class AuthorizationException(override val message: String) : Exception(message)
 
+@KtorExperimentalAPI
 class RoleBasedAuthorization(config: Configuration) {
     private val getRoles = config.getRolesBlock
 

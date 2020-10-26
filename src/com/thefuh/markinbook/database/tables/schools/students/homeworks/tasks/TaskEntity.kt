@@ -10,5 +10,5 @@ class TaskEntity(id: EntityID<Int>) : IntEntity(id) {
 
     var done by TasksTable.done
     var description by TasksTable.description
-    var homework by HomeworkEntity referencedOn TasksTable.homework
+    var homework by HomeworkEntity referencedOn TasksTable.homeworkId
 }
