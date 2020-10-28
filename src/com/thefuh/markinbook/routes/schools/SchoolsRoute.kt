@@ -20,30 +20,41 @@ fun Route.schools(
         call.respond(HttpStatusCode.OK, allDisciplines)
     }
 
-    authenticate {
-        post<SchoolsLocation.Add> {
-            try {
-                val formParams = call.receiveParameters()
-                val title = formParams[SchoolsLocation.Add.TITLE]
-                if (title == null) {
-                    //todo
-                } else {
-                    val newSchool = dbQuery { schoolsRepository.add(title).toSchool() }
-                    call.respond(HttpStatusCode.OK, newSchool)
-                }
-            } catch (e: Throwable) {
-                application.log.error("Failed to add School", e)
-                call.respond(HttpStatusCode.BadRequest, DISCIPLINE_PROBLEMS)
-            }
-        }
-
-        get<SchoolsLocation.School> { school ->
-            val foundSchool = dbQuery { schoolsRepository.getById(school.schoolId)?.toSchool() }
-            if (foundSchool == null) {
+    post<SchoolsLocation.Add> {
+        try {
+            val formParams = call.receiveParameters()
+            val title = formParams[SchoolsLocation.Add.TITLE]
+            if (title == null) {
                 //todo
-            } else {
-                call.respond(HttpStatusCode.OK, foundSchool)
+                return@post
             }
+
+            val longitude = formParams[SchoolsLocation.Add.LONGITUDE]?.toDoubleOrNull()
+            if (longitude == null) {
+                //todo
+                return@post
+            }
+
+            val latitude = formParams[SchoolsLocation.Add.LATITUDE]?.toDoubleOrNull()
+            if (latitude == null) {
+                //todo
+                return@post
+            }
+
+            val newSchool = dbQuery { schoolsRepository.add(title, longitude, latitude).toSchool() }
+            call.respond(HttpStatusCode.OK, newSchool)
+        } catch (e: Throwable) {
+            application.log.error("Failed to add School", e)
+            call.respond(HttpStatusCode.BadRequest, DISCIPLINE_PROBLEMS)
+        }
+    }
+
+    get<SchoolsLocation.School> { school ->
+        val foundSchool = dbQuery { schoolsRepository.getById(school.schoolId)?.toSchool() }
+        if (foundSchool == null) {
+            //todo
+        } else {
+            call.respond(HttpStatusCode.OK, foundSchool)
         }
     }
 }

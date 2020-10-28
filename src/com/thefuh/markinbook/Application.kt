@@ -31,7 +31,8 @@ import io.ktor.sessions.*
 import kotlinx.serialization.json.Json
 import org.slf4j.event.Level
 
-const val API_VERSION = "/v1"
+const val API_NAME = "api"
+const val API_VERSION = "v1"
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -88,7 +89,7 @@ fun Application.module() {
     val homeworksRepository = HomeworksRepository()
 
     routing {
-        users(usersRepository, jwtService, ::hash)
+        users(studentsRepository, schoolRepository, groupsRepository, usersRepository, jwtService, ::hash)
         schools(schoolRepository)
         disciplines(schoolRepository, disciplineRepository)
         students(studentsRepository)

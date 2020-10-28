@@ -13,7 +13,6 @@ fun StudentEntity.toStudent(): Student {
     return Student(
         id.value,
         firstName,
-        middleName,
         lastName
     )
 }

@@ -1,4 +1,4 @@
-package com.thefuh.markinbook.routes.schools.students.groups
+package com.thefuh.markinbook.routes.schools.groups
 
 import com.thefuh.markinbook.data.Group
 import com.thefuh.markinbook.database.tables.schools.students.groups.GroupEntity

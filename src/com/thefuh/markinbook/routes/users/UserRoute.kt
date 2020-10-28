@@ -4,6 +4,9 @@ import com.thefuh.markinbook.auth.JwtService
 import com.thefuh.markinbook.auth.Role
 import com.thefuh.markinbook.auth.UserSession
 import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
+import com.thefuh.markinbook.database.tables.schools.students.StudentsRepository
+import com.thefuh.markinbook.database.tables.schools.students.groups.GroupsRepository
 import com.thefuh.markinbook.database.tables.users.UsersRepository
 import io.ktor.application.application
 import io.ktor.application.call
@@ -21,12 +24,41 @@ import io.ktor.sessions.set
 
 @KtorExperimentalLocationsAPI
 fun Route.users(
+    studentsRepository: StudentsRepository,
+    schoolsRepository: SchoolsRepository,
+    groupsRepository: GroupsRepository,
     usersRepository: UsersRepository,
     jwtService: JwtService,
     hashFunction: (String) -> String,
 ) {
     post<UsersLocation.SignUp> {
         val parameters = call.receive<Parameters>()
+
+        val firstName = parameters[UsersLocation.SignUp.FIRST_NAME]
+            ?: return@post call.respond(
+                HttpStatusCode.Unauthorized, "Missing Fields"
+            )
+        val lastName = parameters[UsersLocation.SignUp.LAST_NAME]
+            ?: return@post call.respond(
+                HttpStatusCode.Unauthorized, "Missing Fields"
+            )
+        val schoolId = parameters[UsersLocation.SignUp.SCHOOL_ID]?.toIntOrNull()
+            ?: return@post call.respond(
+                HttpStatusCode.Unauthorized, "Missing Fields"
+            )
+        val schoolEntity = schoolsRepository.getById(schoolId)
+            ?: return@post call.respond(
+                HttpStatusCode.Unauthorized, "School not found"
+            )
+        val groupId = parameters[UsersLocation.SignUp.GROUP_ID]?.toIntOrNull()
+            ?: return@post call.respond(
+                HttpStatusCode.Unauthorized, "Missing Fields"
+            )
+        val groupEntity = groupsRepository.getById(groupId)
+            ?: return@post call.respond(
+                HttpStatusCode.Unauthorized, "Group not found"
+            )
+
         val email = parameters[UsersLocation.SignUp.EMAIL]
             ?: return@post call.respond(
                 HttpStatusCode.Unauthorized, "Missing Fields"
@@ -35,15 +67,17 @@ fun Route.users(
             ?: return@post call.respond(
                 HttpStatusCode.Unauthorized, "Missing Fields"
             )
-        val rolesString = parameters[UsersLocation.SignUp.ROLE]
+        val role = parameters[UsersLocation.SignUp.ROLE]?.let { Role.valueOf(it) }
             ?: return@post call.respond(
                 HttpStatusCode.Unauthorized, "Missing Fields"
             )
-        val role = Role.valueOf(rolesString)
 
         val passwordHash = hashFunction(password)
         try {
-            val newUser = dbQuery { usersRepository.add(email, passwordHash, role).toUser() }
+            val newUser = dbQuery {
+                studentsRepository.add(firstName, lastName, schoolEntity, groupEntity)
+                usersRepository.add(email, passwordHash, role).toUser()
+            }
 
             call.sessions.set(UserSession(newUser.id))
             call.respondText(

@@ -9,6 +9,6 @@ class StudentEntity(id: EntityID<Int>) : IntEntity(id) {
 
     var firstName by StudentsTable.firstName
     var lastName by StudentsTable.lastName
-    var middleName by StudentsTable.middleName
+    var schoolId by StudentsTable.schoolId
     var groupId by StudentsTable.groupId
 }
