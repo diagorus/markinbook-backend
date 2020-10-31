@@ -75,6 +75,7 @@ class SchoolsLocation {
         @Location("/groups")
         data class Groups(val school: School) {
 
+            @Location("/add")
             data class Add(val groups: Groups) {
                 companion object {
                     const val ARG_TITLE = "title"
