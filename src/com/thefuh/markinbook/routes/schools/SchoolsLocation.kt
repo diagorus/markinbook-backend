@@ -59,6 +59,7 @@ class SchoolsLocation {
                         @Location("/homeworks")
                         data class Homeworks(val lesson: Lesson) {
 
+                            //todo?
                             @Location("/add")
                             data class Add(val homeworks: Homeworks) {
                                 companion object {
@@ -71,7 +72,14 @@ class SchoolsLocation {
             }
         }
 
-        @Location("/students")
-        data class Groups(val school: School)
+        @Location("/groups")
+        data class Groups(val school: School) {
+
+            data class Add(val groups: Groups) {
+                companion object {
+                    const val ARG_TITLE = "title"
+                }
+            }
+        }
     }
 }

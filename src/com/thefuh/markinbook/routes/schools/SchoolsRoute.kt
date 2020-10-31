@@ -4,7 +4,6 @@ import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
 import com.thefuh.markinbook.routes.schools.disciplines.DISCIPLINE_PROBLEMS
 import io.ktor.application.*
-import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.locations.*
 import io.ktor.request.*
@@ -16,8 +15,8 @@ fun Route.schools(
     schoolsRepository: SchoolsRepository,
 ) {
     get<SchoolsLocation> {
-        val allDisciplines = dbQuery { schoolsRepository.getAll().toSchools() }
-        call.respond(HttpStatusCode.OK, allDisciplines)
+        val schools = dbQuery { schoolsRepository.getAll().toSchools() }
+        call.respond(HttpStatusCode.OK, schools)
     }
 
     post<SchoolsLocation.Add> {

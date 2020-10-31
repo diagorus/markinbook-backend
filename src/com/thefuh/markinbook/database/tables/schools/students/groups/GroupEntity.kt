@@ -10,5 +10,7 @@ class GroupEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<GroupEntity>(GroupsTable)
 
     var title by GroupsTable.title
+    var schoolId by GroupsTable.schoolId
+
     val students by StudentEntity referrersOn StudentsTable.groupId
 }
