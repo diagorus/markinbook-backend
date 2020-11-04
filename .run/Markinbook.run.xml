@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Markinbook" type="JetRunConfigurationType">
-    <module name="mark-in-book-backend.main" />
+    <module name="markinbook-backend.main" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="ALTERNATIVE_JRE_PATH" value="$USER_HOME$/.jdks/openjdk-14.0.2-1" />
+    <option name="ALTERNATIVE_JRE_PATH" value="openjdk-15" />
     <option name="PASS_PARENT_ENVS" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.thefuh.markinbook.ApplicationKt" />
     <option name="WORKING_DIRECTORY" value="" />

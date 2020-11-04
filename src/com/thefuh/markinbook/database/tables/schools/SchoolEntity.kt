@@ -10,8 +10,8 @@ class SchoolEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<SchoolEntity>(SchoolsTable)
 
     var title by SchoolsTable.title
-    var longitude by SchoolsTable.longitude
     var latitude by SchoolsTable.latitude
+    var longitude by SchoolsTable.longitude
 
     val disciplines by DisciplineEntity referrersOn DisciplinesTable.schoolId
 }

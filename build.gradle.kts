@@ -17,7 +17,7 @@ group = "com.fuh"
 version = "1"
 
 application {
-    mainClassName = "io.ktor.server.netty.EngineMain"
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 repositories {

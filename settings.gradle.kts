@@ -1,1 +1,1 @@
-rootProject.name = "mark-in-book-backend"
+rootProject.name = "markinbook-backend"

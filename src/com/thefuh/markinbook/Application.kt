@@ -14,6 +14,7 @@ import com.thefuh.markinbook.database.tables.schools.students.homeworks.Homework
 import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonsRepository
 import com.thefuh.markinbook.database.tables.users.UsersRepository
 import com.thefuh.markinbook.routes.schools.disciplines.disciplines
+import com.thefuh.markinbook.routes.schools.groups.groups
 import com.thefuh.markinbook.routes.schools.schools
 import com.thefuh.markinbook.routes.schools.students.homeworks.homeworks
 import com.thefuh.markinbook.routes.schools.students.lessons.lessons
@@ -28,6 +29,7 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.locations.*
 import io.ktor.sessions.*
+import io.ktor.util.*
 import kotlinx.serialization.json.Json
 import org.slf4j.event.Level
 
@@ -36,6 +38,8 @@ const val API_VERSION = "v1"
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@KtorExperimentalAPI
+@KtorExperimentalLocationsAPI
 fun Application.module() {
     install(ContentNegotiation) {
         json(
@@ -89,13 +93,25 @@ fun Application.module() {
     val homeworksRepository = HomeworksRepository()
 
     routing {
-        users(studentsRepository, schoolRepository, groupsRepository, usersRepository, jwtService, ::hash)
         schools(schoolRepository)
+        users(studentsRepository, schoolRepository, groupsRepository, usersRepository, jwtService, ::hash)
         disciplines(schoolRepository, disciplineRepository)
         students(studentsRepository)
-        lessons(studentsRepository,lessonsRepository, groupsRepository, disciplineRepository)
+        lessons(studentsRepository, lessonsRepository, groupsRepository, disciplineRepository)
         homeworks(lessonsRepository, homeworksRepository)
-//        groups
+        groups(schoolRepository, groupsRepository)
 //        tasks
     }
+
+    val root = feature(Routing)
+    val allRoutes = allRoutes(root)
+    val allRoutesWithMethod = allRoutes.filter { it.selector is HttpMethodRouteSelector }
+    allRoutesWithMethod.forEach {
+        log.info("route: $it")
+    }
+}
+
+
+fun allRoutes(root: Route): List<Route> {
+    return listOf(root) + root.children.flatMap { allRoutes(it) }
 }

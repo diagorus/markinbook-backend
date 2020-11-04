@@ -26,7 +26,7 @@ fun Route.groups(
             return@get
         }
 
-        val groupsInSchool = dbQuery { groupsRepository.getAllBySchool(schoolEntity) }
+        val groupsInSchool = dbQuery { groupsRepository.getAllBySchool(schoolEntity).toGroups() }
         call.respond(HttpStatusCode.OK, groupsInSchool)
     }
 
@@ -40,14 +40,14 @@ fun Route.groups(
         }
 
         val formParams = call.receiveParameters()
-        val title = formParams[SchoolsLocation.Add.TITLE]
+        val title = formParams[Groups.Add.ARG_TITLE]
 
         if (title.isNullOrEmpty()) {
             //todo
             return@post
         }
 
-        val newGroup = dbQuery { groupsRepository.add(title, schoolEntity) }
+        val newGroup = dbQuery { groupsRepository.add(title, schoolEntity).toGroup() }
         call.respond(HttpStatusCode.OK, newGroup)
     }
 }

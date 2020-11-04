@@ -6,13 +6,13 @@ class SchoolsRepository {
 
     fun add(
         title: String,
-        longitude: Double,
         latitude: Double,
+        longitude: Double,
     ): SchoolEntity {
         return SchoolEntity.new {
             this.title = title
-            this.longitude = longitude
             this.latitude = latitude
+            this.longitude = longitude
         }
     }
 

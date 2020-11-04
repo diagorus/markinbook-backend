@@ -46,7 +46,8 @@ fun Route.users(
             ?: return@post call.respond(
                 HttpStatusCode.Unauthorized, "Missing Fields"
             )
-        val schoolEntity = schoolsRepository.getById(schoolId)
+
+        val schoolEntity = dbQuery { schoolsRepository.getById(schoolId) }
             ?: return@post call.respond(
                 HttpStatusCode.Unauthorized, "School not found"
             )

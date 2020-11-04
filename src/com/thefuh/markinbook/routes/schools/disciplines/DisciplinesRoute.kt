@@ -25,7 +25,6 @@ fun Route.disciplines(
 
 //    authenticate("jwt") {
     post<Disciplines.Add> { disciplinesAdd ->
-
 //            val user = call.sessions.get<MySession>()?.let {
 //                db.findUser(it.userId)
 //            }
