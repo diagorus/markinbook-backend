@@ -55,7 +55,7 @@ fun Route.users(
             ?: return@post call.respond(
                 HttpStatusCode.Unauthorized, "Missing Fields"
             )
-        val groupEntity = groupsRepository.getById(groupId)
+        val groupEntity = dbQuery { groupsRepository.getById(groupId) }
             ?: return@post call.respond(
                 HttpStatusCode.Unauthorized, "Group not found"
             )

@@ -42,7 +42,7 @@ fun Route.lessons(
             //todo
             return@post
         }
-        val groupEntity = groupsRepository.getById(groupId)
+        val groupEntity = dbQuery { groupsRepository.getById(groupId) }
         if (groupEntity == null) {
             //todo
             return@post
