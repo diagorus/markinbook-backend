@@ -14,6 +14,6 @@ object UsersTable : IntIdTable() {
         "role",
         "Role",
         { Role.valueOf(it as String) },
-        { PGEnum("FooEnum", it) }
+        { PGEnum("Role", it) }
     )
 }

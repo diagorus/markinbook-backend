@@ -68,7 +68,7 @@ fun Application.module() {
     install(Authentication) {
         session<UserSession> {
             validate {
-                val user = usersRepository.findById(it.userId)?.toUser()
+                val user = usersRepository.getById(it.userId)?.toUser()
                 user
             }
         }
@@ -78,7 +78,7 @@ fun Application.module() {
             validate {
                 val payload = it.payload
                 val userId = payload.getClaim("id").asInt()
-                val user = usersRepository.findById(userId)?.toUser()
+                val user = usersRepository.getById(userId)?.toUser()
                 user
             }
         }

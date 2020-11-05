@@ -10,12 +10,13 @@ class StudentsRepository {
     }
 
     fun add(
+        id: Int,
         firstName: String,
         lastName: String,
         schoolEntity: SchoolEntity,
         groupEntity: GroupEntity,
     ): StudentEntity {
-        return StudentEntity.new {
+        return StudentEntity.new(id) {
             this.firstName = firstName
             this.lastName = lastName
             this.schoolId = schoolEntity.id

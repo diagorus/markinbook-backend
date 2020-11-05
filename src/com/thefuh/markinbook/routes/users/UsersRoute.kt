@@ -75,10 +75,9 @@ fun Route.users(
 
         val passwordHash = hashFunction(password)
         try {
-            val newUser = dbQuery {
-                studentsRepository.add(firstName, lastName, schoolEntity, groupEntity)
-                usersRepository.add(email, passwordHash, role).toUser()
-            }
+            val newUser = dbQuery { usersRepository.add(email, passwordHash, role).toUser() }
+
+            dbQuery { studentsRepository.add(newUser.id, firstName, lastName, schoolEntity, groupEntity) }
 
             call.sessions.set(UserSession(newUser.id))
             call.respondText(
@@ -103,7 +102,7 @@ fun Route.users(
 
         val hash = hashFunction(password)
         try {
-            val currentUser = usersRepository.findByEmail(email)?.toUser()
+            val currentUser = dbQuery { usersRepository.getByEmail(email)?.toUser() }
             if (currentUser == null) {
                 //todo
             } else {

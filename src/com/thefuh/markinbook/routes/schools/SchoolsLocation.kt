@@ -37,6 +37,9 @@ class SchoolsLocation {
         @Location("/students")
         data class Students(val school: School) {
 
+            @Location("/current")
+            data class Current(val students: Students)
+
             @Location("/{studentId}")
             data class Student(val students: Students, val studentId: Int) {
 

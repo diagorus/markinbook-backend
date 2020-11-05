@@ -12,11 +12,11 @@ class UsersRepository {
         }
     }
 
-    fun findByEmail(email: String): UserEntity? {
+    fun getByEmail(email: String): UserEntity? {
         return UserEntity.find { UsersTable.email eq email }.firstOrNull()
     }
 
-    fun findById(id: Int): UserEntity? {
+    fun getById(id: Int): UserEntity? {
         return UserEntity.findById(id)
     }
 }
