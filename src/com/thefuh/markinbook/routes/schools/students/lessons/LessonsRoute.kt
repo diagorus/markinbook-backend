@@ -13,7 +13,6 @@ import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.routing.get
 import java.util.*
 
 @KtorExperimentalLocationsAPI

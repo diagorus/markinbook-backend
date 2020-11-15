@@ -47,7 +47,7 @@ class SchoolsLocation {
     }
 
     @Location("/students")
-    data class Students(val school: School) {
+    data class Students(val school: SchoolsLocation) {
 
         @Location("/current")
         data class Current(val students: Students)
