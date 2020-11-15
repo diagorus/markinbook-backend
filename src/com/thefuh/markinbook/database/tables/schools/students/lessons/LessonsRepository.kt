@@ -4,6 +4,7 @@ import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplineEntit
 import com.thefuh.markinbook.database.tables.schools.students.StudentEntity
 import com.thefuh.markinbook.database.tables.schools.students.groups.GroupEntity
 import org.jetbrains.exposed.sql.SizedIterable
+import org.jetbrains.exposed.sql.and
 
 class LessonsRepository {
 
@@ -22,6 +23,19 @@ class LessonsRepository {
             this.durationInMinutes = durationInMinutes
         }
     }
+
+    fun getAllForWeek(
+        studentId: Int,
+        weekStartMillis: Long,
+        weekEndMillis: Long
+    ): SizedIterable<LessonEntity> {
+        return LessonEntity.find {
+            (LessonsTable.studentId eq studentId) and
+                    (LessonsTable.start greaterEq weekStartMillis) and
+                    (LessonsTable.start lessEq weekEndMillis)
+        }
+    }
+
 
     fun getAllByStudentId(studentId: Int): SizedIterable<LessonEntity> {
         return LessonEntity.find { LessonsTable.studentId eq studentId }

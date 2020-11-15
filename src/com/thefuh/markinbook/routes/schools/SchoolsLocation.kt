@@ -71,6 +71,9 @@ class SchoolsLocation {
                             }
                         }
                     }
+
+                    @Location("/by-days")
+                    data class ByDays(val lessons: Lessons, val week: Int, val year: Int)
                 }
             }
         }
