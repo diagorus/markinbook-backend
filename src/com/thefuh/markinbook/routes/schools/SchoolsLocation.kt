@@ -34,50 +34,6 @@ class SchoolsLocation {
             data class Discipline(val disciplines: Disciplines, val disciplineId: Int)
         }
 
-        @Location("/students")
-        data class Students(val school: School) {
-
-            @Location("/current")
-            data class Current(val students: Students)
-
-            @Location("/{studentId}")
-            data class Student(val students: Students, val studentId: Int) {
-
-                @Location("/lessons")
-                data class Lessons(val student: Student) {
-
-                    @Location("/add")
-                    data class Add(val lessons: Lessons) {
-                        companion object {
-                            const val ARG_DISCIPLINE_ID = "disciplineId"
-                            const val ARG_GROUP_ID = "groupId"
-                            const val ARG_START = "start"
-                            const val ARG_DURATION_IN_MINUTES = "durationInMinutes"
-                        }
-                    }
-
-                    @Location("/{lessonId}")
-                    data class Lesson(val lessons: Lessons, val lessonId: Int) {
-
-                        @Location("/homeworks")
-                        data class Homeworks(val lesson: Lesson) {
-
-                            //todo?
-                            @Location("/add")
-                            data class Add(val homeworks: Homeworks) {
-                                companion object {
-
-                                }
-                            }
-                        }
-                    }
-
-                    @Location("/by-days")
-                    data class ByDays(val lessons: Lessons, val week: Int, val year: Int)
-                }
-            }
-        }
-
         @Location("/groups")
         data class Groups(val school: School) {
 
@@ -86,6 +42,50 @@ class SchoolsLocation {
                 companion object {
                     const val ARG_TITLE = "title"
                 }
+            }
+        }
+    }
+
+    @Location("/students")
+    data class Students(val school: School) {
+
+        @Location("/current")
+        data class Current(val students: Students)
+
+        @Location("/{studentId}")
+        data class Student(val students: Students, val studentId: Int) {
+
+            @Location("/lessons")
+            data class Lessons(val student: Student) {
+
+                @Location("/add")
+                data class Add(val lessons: Lessons) {
+                    companion object {
+                        const val ARG_DISCIPLINE_ID = "disciplineId"
+                        const val ARG_GROUP_ID = "groupId"
+                        const val ARG_START = "start"
+                        const val ARG_DURATION_IN_MINUTES = "durationInMinutes"
+                    }
+                }
+
+                @Location("/{lessonId}")
+                data class Lesson(val lessons: Lessons, val lessonId: Int) {
+
+                    @Location("/homeworks")
+                    data class Homeworks(val lesson: Lesson) {
+
+                        //todo?
+                        @Location("/add")
+                        data class Add(val homeworks: Homeworks) {
+                            companion object {
+
+                            }
+                        }
+                    }
+                }
+
+                @Location("/by-days")
+                data class ByDays(val lessons: Lessons, val week: Int, val year: Int)
             }
         }
     }
