@@ -44,7 +44,7 @@ class SchoolsLocation {
                 }
             }
 
-            @Location("/{groupId}}")
+            @Location("/{groupId}")
             data class Group(val groups: Groups, val groupId: Int)
         }
     }
