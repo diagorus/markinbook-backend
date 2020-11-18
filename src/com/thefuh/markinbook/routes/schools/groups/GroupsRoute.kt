@@ -29,7 +29,14 @@ fun Route.groups(
         val groupsInSchool = dbQuery { groupsRepository.getAllBySchool(schoolEntity).toGroups() }
         call.respond(HttpStatusCode.OK, groupsInSchool)
     }
-
+    get<Groups.Group> { groupGet ->
+        val group = dbQuery { groupsRepository.getById(groupGet.groupId)?.toGroup() }
+        if (group == null) {
+            //todo
+        } else {
+            call.respond(HttpStatusCode.OK, group)
+        }
+    }
     post<Groups.Add> { groupsAdd ->
         val schoolId = groupsAdd.groups.school.schoolId
         val schoolEntity = dbQuery { schoolsRepository.getById(schoolId) }

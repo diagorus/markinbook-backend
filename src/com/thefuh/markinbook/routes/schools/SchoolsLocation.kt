@@ -43,9 +43,13 @@ class SchoolsLocation {
                     const val ARG_TITLE = "title"
                 }
             }
+
+            @Location("/{groupId}}")
+            data class Group(val groups: Groups, val groupId: Int)
         }
     }
 }
+
 @KtorExperimentalLocationsAPI
 @Location("$API_NAME/$API_VERSION/students")
 class StudentsLocation {
