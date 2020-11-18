@@ -1,3 +1,5 @@
 package com.thefuh.markinbook.auth
 
-data class UserSession(val userId: Int)
+import io.ktor.auth.Principal
+
+data class UserSession(val userId: Int, val role: Role): Principal

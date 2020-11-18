@@ -81,7 +81,7 @@ fun Route.users(
 
             dbQuery { studentsRepository.add(newUser.id, firstName, lastName, schoolEntity, groupEntity) }
 
-            call.sessions.set(UserSession(newUser.id))
+//            call.sessions.set(UserSession(newUser.id, newUser.role))
             call.respondText(
                 jwtService.generateToken(newUser),
                 status = HttpStatusCode.Created
@@ -109,7 +109,7 @@ fun Route.users(
                 //todo
             } else {
                 if (currentUser.passwordHash == hash) {
-                    call.sessions.set(UserSession(currentUser.id))
+//                    call.sessions.set(UserSession(currentUser.id, currentUser.role))
                     call.respondText(jwtService.generateToken(currentUser))
                 } else {
                     call.respond(HttpStatusCode.BadRequest, "Problems retrieving User")

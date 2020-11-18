@@ -16,7 +16,7 @@ import io.ktor.sessions.*
 fun Route.students(
     studentsRepository: StudentsRepository,
 ) {
-    authenticate("jwt") {
+    authenticate {
         get<StudentsLocation> {
             val allStudents = dbQuery { studentsRepository.getAll().toStudents() }
             call.respond(HttpStatusCode.OK, allStudents)
@@ -30,7 +30,7 @@ fun Route.students(
             }
         }
         get<StudentsLocation.Current> {
-            val userId = call.sessions.get<UserSession>()?.userId
+            val userId = call.authentication.principal<UserSession>()?.userId
             if (userId == null) {
                 //todo
                 return@get

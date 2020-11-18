@@ -6,6 +6,7 @@ import com.thefuh.markinbook.auth.RoleBasedAuthorization
 import com.thefuh.markinbook.auth.hash
 import com.thefuh.markinbook.data.User
 import com.thefuh.markinbook.database.DatabaseFactory
+import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesRepository
 import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
 import com.thefuh.markinbook.database.tables.schools.students.StudentsRepository
@@ -41,6 +42,10 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @KtorExperimentalAPI
 @KtorExperimentalLocationsAPI
 fun Application.module() {
+    install(CallLogging) {
+        level = Level.INFO
+    }
+//    install(DefaultHeaders)
     install(ContentNegotiation) {
         json(
             Json(DefaultJson) {
@@ -48,40 +53,38 @@ fun Application.module() {
             }
         )
     }
-    install(CallLogging) {
-        level = Level.INFO
-    }
-    install(Sessions) {
-        header<UserSession>("Authorization")
-    }
     install(Locations)
-    install(RoleBasedAuthorization) {
-        getRoles { (it as User).role }
-    }
     install(CORS) {
         anyHost()
     }
+
     DatabaseFactory.init()
 
     val jwtService = JwtService()
 
     val usersRepository = UsersRepository()
 
+//    install(Sessions) {
+//        header<UserSession>("Authorization", SessionStorageMemory())
+//    }
+    install(RoleBasedAuthorization) {
+        getRoles { (it as UserSession).role }
+    }
     install(Authentication) {
-        session<UserSession> {
-            validate {
-                val user = usersRepository.getById(it.userId)?.toUser()
-                user
-            }
-        }
-        jwt("jwt") {
+//        session<UserSession> {
+//            validate {
+//                val user = dbQuery { usersRepository.getById(it.userId)?.toUser() }
+//                user?.let { UserSession(it.id, it.role) }
+//            }
+//        }
+        jwt {
             verifier(jwtService.verifier)
             realm = "markinbook-backend"
             validate {
                 val payload = it.payload
                 val userId = payload.getClaim("id").asInt()
-                val user = usersRepository.getById(userId)?.toUser()
-                user
+                val user = dbQuery { usersRepository.getById(userId)?.toUser() }
+                user?.let { UserSession(it.id, it.role) }
             }
         }
     }
