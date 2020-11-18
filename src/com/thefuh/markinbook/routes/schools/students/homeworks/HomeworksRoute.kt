@@ -3,7 +3,7 @@ package com.thefuh.markinbook.routes.schools.students.homeworks
 import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.database.tables.schools.students.homeworks.HomeworksRepository
 import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonsRepository
-import com.thefuh.markinbook.routes.schools.SchoolsLocation.Students.Student.Lessons.Lesson.*
+import com.thefuh.markinbook.routes.schools.StudentsLocation.Student.Lessons.Lesson.Homeworks
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.locations.*

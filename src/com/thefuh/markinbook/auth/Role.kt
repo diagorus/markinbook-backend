@@ -1,7 +1,13 @@
 package com.thefuh.markinbook.auth;
 
-enum class Role {
-    TEACHER,
-    STUDENT,
-    PARENT
+enum class Role(val title: String) {
+    TEACHER("teacher"),
+    STUDENT("student"),
+    PARENT("parent");
+
+    companion object {
+        fun findByTitle(title: String): Role? {
+            return values().find { it.title == title }
+        }
+    }
 }

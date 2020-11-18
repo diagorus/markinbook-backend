@@ -6,7 +6,8 @@ import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesRepo
 import com.thefuh.markinbook.database.tables.schools.students.StudentsRepository
 import com.thefuh.markinbook.database.tables.schools.students.groups.GroupsRepository
 import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonsRepository
-import com.thefuh.markinbook.routes.schools.SchoolsLocation.Students.Student.Lessons
+import com.thefuh.markinbook.routes.schools.StudentsLocation
+import com.thefuh.markinbook.routes.schools.StudentsLocation.Student.Lessons
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.locations.*

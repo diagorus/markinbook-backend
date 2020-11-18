@@ -21,6 +21,8 @@ import io.ktor.response.respondText
 import io.ktor.routing.*
 import io.ktor.sessions.sessions
 import io.ktor.sessions.set
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 @KtorExperimentalLocationsAPI
 fun Route.users(
@@ -98,7 +100,7 @@ fun Route.users(
         val roleString = parameters[UsersLocation.SignIn.ROLE]
             ?: return@post call.respond(HttpStatusCode.Unauthorized, "Missing Fields")
 
-        val role = Role.valueOf(roleString)
+        val role = Role.findByTitle(roleString)
 
         val hash = hashFunction(password)
         try {

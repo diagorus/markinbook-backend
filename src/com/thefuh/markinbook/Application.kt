@@ -58,7 +58,9 @@ fun Application.module() {
     install(RoleBasedAuthorization) {
         getRoles { (it as User).role }
     }
-
+    install(CORS) {
+        anyHost()
+    }
     DatabaseFactory.init()
 
     val jwtService = JwtService()
@@ -93,6 +95,8 @@ fun Application.module() {
     val homeworksRepository = HomeworksRepository()
 
     routing {
+//       trace { application.log.trace(it.buildText()) }
+
         schools(schoolRepository)
         users(studentsRepository, schoolRepository, groupsRepository, usersRepository, jwtService, ::hash)
         disciplines(schoolRepository, disciplineRepository)
