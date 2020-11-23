@@ -1,8 +1,8 @@
-package com.thefuh.markinbook.database.tables.schools.students.lessons
+package com.thefuh.markinbook.database.tables.lessons
 
 import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplineEntity
-import com.thefuh.markinbook.database.tables.schools.students.StudentEntity
-import com.thefuh.markinbook.database.tables.schools.students.groups.GroupEntity
+import com.thefuh.markinbook.database.tables.students.StudentEntity
+import com.thefuh.markinbook.database.tables.students.groups.GroupEntity
 import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.and
 

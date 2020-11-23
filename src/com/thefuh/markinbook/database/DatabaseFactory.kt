@@ -1,10 +1,10 @@
 package com.thefuh.markinbook.database
 
 import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesTable
-import com.thefuh.markinbook.database.tables.schools.students.groups.GroupsTable
-import com.thefuh.markinbook.database.tables.schools.students.homeworks.HomeworksTable
-import com.thefuh.markinbook.database.tables.schools.students.homeworks.tasks.TasksTable
-import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonsTable
+import com.thefuh.markinbook.database.tables.students.groups.GroupsTable
+import com.thefuh.markinbook.database.tables.students.homeworks.HomeworksTable
+import com.thefuh.markinbook.database.tables.students.homeworks.tasks.TasksTable
+import com.thefuh.markinbook.database.tables.lessons.LessonsTable
 import com.thefuh.markinbook.database.tables.users.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource

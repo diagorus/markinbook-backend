@@ -4,15 +4,15 @@ import com.thefuh.markinbook.auth.JwtService
 import com.thefuh.markinbook.auth.UserSession
 import com.thefuh.markinbook.auth.RoleBasedAuthorization
 import com.thefuh.markinbook.auth.hash
-import com.thefuh.markinbook.data.User
 import com.thefuh.markinbook.database.DatabaseFactory
 import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesRepository
 import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
-import com.thefuh.markinbook.database.tables.schools.students.StudentsRepository
-import com.thefuh.markinbook.database.tables.schools.students.groups.GroupsRepository
-import com.thefuh.markinbook.database.tables.schools.students.homeworks.HomeworksRepository
-import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonsRepository
+import com.thefuh.markinbook.database.tables.students.StudentsRepository
+import com.thefuh.markinbook.database.tables.students.groups.GroupsRepository
+import com.thefuh.markinbook.database.tables.students.homeworks.HomeworksRepository
+import com.thefuh.markinbook.database.tables.lessons.LessonsRepository
+import com.thefuh.markinbook.database.tables.teachers.TeachersRepository
 import com.thefuh.markinbook.database.tables.users.UsersRepository
 import com.thefuh.markinbook.routes.schools.disciplines.disciplines
 import com.thefuh.markinbook.routes.schools.groups.groups
@@ -29,7 +29,6 @@ import io.ktor.features.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.locations.*
-import io.ktor.sessions.*
 import io.ktor.util.*
 import kotlinx.serialization.json.Json
 import org.slf4j.event.Level
@@ -93,15 +92,16 @@ fun Application.module() {
     val disciplineRepository = DisciplinesRepository()
 
     val studentsRepository = StudentsRepository()
+    val teachersRepository = TeachersRepository()
     val lessonsRepository = LessonsRepository()
     val groupsRepository = GroupsRepository()
     val homeworksRepository = HomeworksRepository()
 
     routing {
-//       trace { application.log.trace(it.buildText()) }
+       trace { application.log.trace(it.buildText()) }
 
         schools(schoolRepository)
-        users(studentsRepository, schoolRepository, groupsRepository, usersRepository, jwtService, ::hash)
+        users(studentsRepository, teachersRepository, schoolRepository, groupsRepository, usersRepository, jwtService, ::hash)
         disciplines(schoolRepository, disciplineRepository)
         students(studentsRepository)
         lessons(studentsRepository, lessonsRepository, groupsRepository, disciplineRepository)

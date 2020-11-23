@@ -1,8 +1,7 @@
 package com.thefuh.markinbook.routes.schools.students.homeworks.tasks
 
-import com.thefuh.markinbook.data.Lesson
 import com.thefuh.markinbook.data.Lesson.Homework.Task
-import com.thefuh.markinbook.database.tables.schools.students.homeworks.tasks.TaskEntity
+import com.thefuh.markinbook.database.tables.students.homeworks.tasks.TaskEntity
 import org.jetbrains.exposed.sql.SizedIterable
 
 fun TaskEntity.toTask(): Task {

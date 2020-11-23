@@ -2,7 +2,7 @@ package com.thefuh.markinbook.routes.schools.students
 
 import com.thefuh.markinbook.auth.UserSession
 import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
-import com.thefuh.markinbook.database.tables.schools.students.StudentsRepository
+import com.thefuh.markinbook.database.tables.students.StudentsRepository
 import com.thefuh.markinbook.routes.schools.StudentsLocation
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -30,7 +30,7 @@ fun Route.students(
             }
         }
         get<StudentsLocation.Current> {
-            val userId = call.authentication.principal<UserSession>()?.userId
+            val userId = call.principal<UserSession>()?.userId
             if (userId == null) {
                 //todo
                 return@get

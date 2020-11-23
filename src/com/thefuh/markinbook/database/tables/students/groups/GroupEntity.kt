@@ -1,7 +1,7 @@
-package com.thefuh.markinbook.database.tables.schools.students.groups
+package com.thefuh.markinbook.database.tables.students.groups
 
-import com.thefuh.markinbook.database.tables.schools.students.StudentEntity
-import com.thefuh.markinbook.database.tables.schools.students.StudentsTable
+import com.thefuh.markinbook.database.tables.students.StudentEntity
+import com.thefuh.markinbook.database.tables.students.StudentsTable
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID

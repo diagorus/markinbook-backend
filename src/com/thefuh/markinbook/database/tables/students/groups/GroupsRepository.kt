@@ -1,4 +1,4 @@
-package com.thefuh.markinbook.database.tables.schools.students.groups
+package com.thefuh.markinbook.database.tables.students.groups
 
 import com.thefuh.markinbook.database.tables.schools.SchoolEntity
 import org.jetbrains.exposed.sql.SizedIterable

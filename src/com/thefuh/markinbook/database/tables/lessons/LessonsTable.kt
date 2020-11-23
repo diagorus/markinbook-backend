@@ -1,9 +1,9 @@
-package com.thefuh.markinbook.database.tables.schools.students.lessons
+package com.thefuh.markinbook.database.tables.lessons
 
-import com.thefuh.markinbook.database.tables.schools.students.groups.GroupsTable
+import com.thefuh.markinbook.database.tables.students.groups.GroupsTable
 import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesTable
-import com.thefuh.markinbook.database.tables.schools.students.StudentsTable
-import com.thefuh.markinbook.database.tables.schools.students.homeworks.HomeworksTable
+import com.thefuh.markinbook.database.tables.students.StudentsTable
+import com.thefuh.markinbook.database.tables.students.homeworks.HomeworksTable
 import org.jetbrains.exposed.dao.id.IntIdTable
 
 object LessonsTable : IntIdTable() {

@@ -2,8 +2,7 @@ package com.thefuh.markinbook.routes.schools.groups
 
 import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
-import com.thefuh.markinbook.database.tables.schools.students.groups.GroupsRepository
-import com.thefuh.markinbook.routes.schools.SchoolsLocation
+import com.thefuh.markinbook.database.tables.students.groups.GroupsRepository
 import com.thefuh.markinbook.routes.schools.SchoolsLocation.School.Groups
 import io.ktor.application.*
 import io.ktor.http.*

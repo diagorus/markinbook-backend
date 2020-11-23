@@ -1,7 +1,7 @@
 package com.thefuh.markinbook.routes.schools.students.lessons
 
 import com.thefuh.markinbook.data.Lesson
-import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonEntity
+import com.thefuh.markinbook.database.tables.lessons.LessonEntity
 import com.thefuh.markinbook.routes.schools.disciplines.toDiscipline
 import com.thefuh.markinbook.routes.schools.groups.toGroup
 import com.thefuh.markinbook.routes.schools.students.homeworks.toHomework

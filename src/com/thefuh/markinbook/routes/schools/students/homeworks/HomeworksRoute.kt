@@ -1,9 +1,9 @@
 package com.thefuh.markinbook.routes.schools.students.homeworks
 
 import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
-import com.thefuh.markinbook.database.tables.schools.students.homeworks.HomeworksRepository
-import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonsRepository
-import com.thefuh.markinbook.routes.schools.StudentsLocation.Student.Lessons.Lesson.Homeworks
+import com.thefuh.markinbook.database.tables.students.homeworks.HomeworksRepository
+import com.thefuh.markinbook.database.tables.lessons.LessonsRepository
+import com.thefuh.markinbook.routes.schools.LessonsLocation
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.locations.*
@@ -15,7 +15,7 @@ fun Route.homeworks(
     lessonsRepository: LessonsRepository,
     homeworksRepository: HomeworksRepository,
 ) {
-    post<Homeworks.Add> { homeworksAdd ->
+    post<LessonsLocation.Lesson.Homeworks.Add> { homeworksAdd ->
         val lessonId = homeworksAdd.homeworks.lesson.lessonId
         val lessonEntity = dbQuery { lessonsRepository.getById(lessonId) }
         if (lessonEntity == null) {

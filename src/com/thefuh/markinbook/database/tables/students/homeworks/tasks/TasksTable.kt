@@ -1,6 +1,6 @@
-package com.thefuh.markinbook.database.tables.schools.students.homeworks.tasks
+package com.thefuh.markinbook.database.tables.students.homeworks.tasks
 
-import com.thefuh.markinbook.database.tables.schools.students.homeworks.HomeworksTable
+import com.thefuh.markinbook.database.tables.students.homeworks.HomeworksTable
 import org.jetbrains.exposed.dao.id.IntIdTable
 
 object TasksTable : IntIdTable() {

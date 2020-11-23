@@ -1,4 +1,4 @@
-package com.thefuh.markinbook.database.tables.schools.students
+package com.thefuh.markinbook.database.tables.students
 
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass

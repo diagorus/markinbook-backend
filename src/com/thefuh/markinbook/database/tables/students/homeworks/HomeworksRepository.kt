@@ -1,6 +1,6 @@
-package com.thefuh.markinbook.database.tables.schools.students.homeworks
+package com.thefuh.markinbook.database.tables.students.homeworks
 
-import com.thefuh.markinbook.database.tables.schools.students.lessons.LessonEntity
+import com.thefuh.markinbook.database.tables.lessons.LessonEntity
 
 class HomeworksRepository {
 

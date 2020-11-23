@@ -1,7 +1,7 @@
-package com.thefuh.markinbook.database.tables.schools.students
+package com.thefuh.markinbook.database.tables.students
 
 import com.thefuh.markinbook.database.tables.schools.SchoolEntity
-import com.thefuh.markinbook.database.tables.schools.students.groups.GroupEntity
+import com.thefuh.markinbook.database.tables.students.groups.GroupEntity
 import org.jetbrains.exposed.sql.SizedIterable
 
 class StudentsRepository {

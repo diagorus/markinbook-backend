@@ -8,8 +8,8 @@ import io.ktor.locations.*
 @Location("$API_NAME/$API_VERSION/users")
 class UsersLocation {
 
-    @Location("/signUp")
-    data class SignUp(val users: UsersLocation) {
+    @Location("{role}/signUp")
+    data class SignUp(val users: UsersLocation, val role: String) {
         companion object {
             const val FIRST_NAME = "firstName"
             const val LAST_NAME = "lastName"
@@ -18,16 +18,14 @@ class UsersLocation {
 
             const val EMAIL = "email"
             const val PASSWORD = "password"
-            const val ROLE = "role"
         }
     }
 
-    @Location("/signIn")
-    data class SignIn(val users: UsersLocation) {
+    @Location("{role}/signIn")
+    data class SignIn(val users: UsersLocation, val role: String) {
         companion object {
             const val EMAIL = "email"
             const val PASSWORD = "password"
-            const val ROLE = "role"
         }
     }
 
