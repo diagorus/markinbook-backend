@@ -16,5 +16,6 @@ fun StudentEntity.toStudent(): Student {
         lastName,
         schoolId.value,
         groupId.value,
+        profileImage
     )
 }

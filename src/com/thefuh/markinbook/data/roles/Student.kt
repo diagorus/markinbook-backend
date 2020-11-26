@@ -9,4 +9,5 @@ data class Student(
     val lastName: String,
     val schoolId: Int,
     val groupId: Int,
+    val profileImage: String?,
 )
