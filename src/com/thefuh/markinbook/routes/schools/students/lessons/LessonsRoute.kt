@@ -2,14 +2,17 @@ package com.thefuh.markinbook.routes.schools.students.lessons
 
 import com.thefuh.markinbook.auth.Role
 import com.thefuh.markinbook.auth.UserSession
+import com.thefuh.markinbook.auth.withAnyRole
 import com.thefuh.markinbook.auth.withRole
 import com.thefuh.markinbook.data.Day
 import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesRepository
-import com.thefuh.markinbook.database.tables.students.StudentsRepository
 import com.thefuh.markinbook.database.tables.students.groups.GroupsRepository
 import com.thefuh.markinbook.database.tables.lessons.LessonsRepository
+import com.thefuh.markinbook.database.tables.students.StudentsRepository
+import com.thefuh.markinbook.database.tables.teachers.TeachersRepository
 import com.thefuh.markinbook.routes.schools.LessonsLocation
+import com.thefuh.markinbook.routes.schools.students.toStudent
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -22,26 +25,17 @@ import java.util.*
 @KtorExperimentalLocationsAPI
 fun Route.lessons(
     studentsRepository: StudentsRepository,
+    teachersRepository: TeachersRepository,
     lessonsRepository: LessonsRepository,
     groupsRepository: GroupsRepository,
     disciplinesRepository: DisciplinesRepository,
 ) {
     authenticate {
-        withRole(Role.STUDENT) {
-            get<LessonsLocation> { lessons ->
-                val userId = call.principal<UserSession>()?.userId
-                if (userId == null) {
-                    //todo
-                    return@get
-                }
-
-                val studentsLessons = dbQuery { lessonsRepository.getAllByStudentId(userId).toLessons() }
-                call.respond(HttpStatusCode.OK, studentsLessons)
-            }
+        withAnyRole(Role.STUDENT, Role.TEACHER) {
             get<LessonsLocation.ByDays> { byDays ->
-                val userId = call.principal<UserSession>()?.userId
+                val userSession = call.principal<UserSession>()
 
-                if (userId == null) {
+                if (userSession == null) {
                     //todo
                     return@get
                 }
@@ -87,8 +81,12 @@ fun Route.lessons(
                     .timeInMillis
 
                 val lessonsByWeekday = dbQuery {
-                    val allLessonsInWeek =
-                        lessonsRepository.getAllForWeek(userId, mondayStartMillis, nextMondayStartMillis).toLessons()
+                    val allLessonsInWeek = if (userSession.role == Role.STUDENT) {
+                       val student = studentsRepository.getById(userSession.userId)!!
+                        lessonsRepository.getAllForWeekForGroup(student.groupId.value, mondayStartMillis, nextMondayStartMillis).toLessons()
+                    } else {
+                        lessonsRepository.getAllForWeekForTeacher(userSession.userId, mondayStartMillis, nextMondayStartMillis).toLessons()
+                    }
                     allLessonsInWeek.groupBy {
                         when (it.start) {
                             in mondayStartMillis until tuesdayStartMillis -> {
@@ -118,6 +116,8 @@ fun Route.lessons(
                 }
                 call.respond(HttpStatusCode.OK, lessonsByWeekday)
             }
+        }
+        withRole(Role.TEACHER) {
             post<LessonsLocation.Add> {
                 val userId = call.principal<UserSession>()?.userId
 
@@ -126,8 +126,8 @@ fun Route.lessons(
                     return@post
                 }
 
-                val studentEntity = studentsRepository.getById(userId)
-                if (studentEntity == null) {
+                val teacherEntity = teachersRepository.getById(userId)
+                if (teacherEntity == null) {
                     //todo
                     return@post
                 }
@@ -170,7 +170,7 @@ fun Route.lessons(
 
                 val addedLesson = dbQuery {
                     lessonsRepository.add(
-                        studentEntity,
+                        teacherEntity,
                         groupEntity,
                         disciplineEntity,
                         start,

@@ -4,6 +4,7 @@ import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplineEntit
 import com.thefuh.markinbook.database.tables.students.StudentEntity
 import com.thefuh.markinbook.database.tables.students.groups.GroupEntity
 import com.thefuh.markinbook.database.tables.students.homeworks.HomeworkEntity
+import com.thefuh.markinbook.database.tables.teachers.TeacherEntity
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -11,7 +12,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 class LessonEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<LessonEntity>(LessonsTable)
 
-    var student by StudentEntity referencedOn LessonsTable.studentId
+    var teacher by TeacherEntity referencedOn LessonsTable.teacherId
     var group by GroupEntity referencedOn LessonsTable.groupId
     var discipline by DisciplineEntity referencedOn LessonsTable.disciplineId
     var start by LessonsTable.start

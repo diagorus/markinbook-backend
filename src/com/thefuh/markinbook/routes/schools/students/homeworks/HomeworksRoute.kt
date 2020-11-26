@@ -15,15 +15,11 @@ fun Route.homeworks(
     lessonsRepository: LessonsRepository,
     homeworksRepository: HomeworksRepository,
 ) {
-    post<LessonsLocation.Lesson.Homeworks.Add> { homeworksAdd ->
-        val lessonId = homeworksAdd.homeworks.lesson.lessonId
-        val lessonEntity = dbQuery { lessonsRepository.getById(lessonId) }
-        if (lessonEntity == null) {
-            //todo
-            return@post
-        }
-
-        val addedHomework = dbQuery { homeworksRepository.add(lessonEntity) }
-        call.respond(HttpStatusCode.OK, addedHomework)
-    }
+//    post<LessonsLocation.Lesson.Homeworks.Add> { homeworksAdd ->
+//        val lessonId = homeworksAdd.homeworks.lesson.lessonId
+//        val lessonEntity = dbQuery { lessonsRepository.getById(lessonId) }!!
+//
+//        val addedHomework = dbQuery { homeworksRepository.add(lessonEntity) }
+//        call.respond(HttpStatusCode.OK, addedHomework)
+//    }
 }

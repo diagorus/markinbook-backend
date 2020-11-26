@@ -9,7 +9,7 @@ import io.ktor.locations.*
 class SchoolsLocation {
 
     @Location("/add")
-    data class Add(val school: SchoolsLocation) {
+    class Add(val school: SchoolsLocation) {
         companion object {
             const val TITLE = "title"
             const val LONGITUDE = "longitude"
@@ -18,10 +18,10 @@ class SchoolsLocation {
     }
 
     @Location("/{schoolId}")
-    data class School(val schools: SchoolsLocation, val schoolId: Int) {
+    class School(val schools: SchoolsLocation, val schoolId: Int) {
 
         @Location("/disciplines")
-        data class Disciplines(val school: School) {
+        class Disciplines(val school: School) {
 
             @Location("/add")
             data class Add(val disciplines: Disciplines) {
@@ -35,17 +35,17 @@ class SchoolsLocation {
         }
 
         @Location("/groups")
-        data class Groups(val school: School) {
+        class Groups(val school: School) {
 
             @Location("/add")
-            data class Add(val groups: Groups) {
+            class Add(val groups: Groups) {
                 companion object {
                     const val ARG_TITLE = "title"
                 }
             }
 
             @Location("/{groupId}")
-            data class Group(val groups: Groups, val groupId: Int)
+            class Group(val groups: Groups, val groupId: Int)
         }
     }
 }
@@ -55,10 +55,14 @@ class SchoolsLocation {
 class StudentsLocation {
 
     @Location("/{studentId}")
-    data class Student(val students: StudentsLocation, val studentId: Int)
+    class Student(val students: StudentsLocation, val studentId: Int)
 
     @Location("/current")
-    data class Current(val students: StudentsLocation)
+    class Current(val students: StudentsLocation) {
+
+        @Location("/add-profile-image")
+        class AddProfileImage(val current: Current)
+    }
 }
 
 @KtorExperimentalLocationsAPI
@@ -66,7 +70,7 @@ class StudentsLocation {
 class LessonsLocation {
 
     @Location("/add")
-    data class Add(val lessons: LessonsLocation) {
+    class Add(val lessons: LessonsLocation) {
         companion object {
             const val ARG_DISCIPLINE_ID = "disciplineId"
             const val ARG_GROUP_ID = "groupId"
@@ -76,7 +80,7 @@ class LessonsLocation {
     }
 
     @Location("/{lessonId}")
-    data class Lesson(val lessons: LessonsLocation, val lessonId: Int) {
+    class Lesson(val lessons: LessonsLocation, val lessonId: Int) {
 
         @Location("/homeworks")
         data class Homeworks(val lesson: Lesson) {
@@ -92,5 +96,5 @@ class LessonsLocation {
     }
 
     @Location("/by-days")
-    data class ByDays(val lessons: LessonsLocation, val week: Int, val year: Int)
+    class ByDays(val lessons: LessonsLocation, val week: Int, val year: Int)
 }

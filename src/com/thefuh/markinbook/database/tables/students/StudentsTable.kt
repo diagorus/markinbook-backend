@@ -7,6 +7,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 object StudentsTable : IntIdTable() {
     val firstName = text("firstName")
     val lastName = text("lastName")
+    val profileImage = text("profileImage").nullable()
 
     val schoolId = reference("schoolId", SchoolsTable)
     val groupId = reference("groupId", GroupsTable)

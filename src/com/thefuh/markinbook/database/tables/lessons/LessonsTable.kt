@@ -4,10 +4,11 @@ import com.thefuh.markinbook.database.tables.students.groups.GroupsTable
 import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesTable
 import com.thefuh.markinbook.database.tables.students.StudentsTable
 import com.thefuh.markinbook.database.tables.students.homeworks.HomeworksTable
+import com.thefuh.markinbook.database.tables.teachers.TeachersTable
 import org.jetbrains.exposed.dao.id.IntIdTable
 
 object LessonsTable : IntIdTable() {
-    val studentId = reference("studentId", StudentsTable)
+    val teacherId = reference("teacherId", TeachersTable)
     val groupId = reference("groupId", GroupsTable)
     val disciplineId = reference("disciplineId", DisciplinesTable)
     val start = long("start")

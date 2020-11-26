@@ -9,6 +9,7 @@ class StudentEntity(id: EntityID<Int>) : IntEntity(id) {
 
     var firstName by StudentsTable.firstName
     var lastName by StudentsTable.lastName
+    var profileImage by StudentsTable.profileImage
     var schoolId by StudentsTable.schoolId
     var groupId by StudentsTable.groupId
 }

@@ -14,6 +14,7 @@ import com.thefuh.markinbook.database.tables.students.homeworks.HomeworksReposit
 import com.thefuh.markinbook.database.tables.lessons.LessonsRepository
 import com.thefuh.markinbook.database.tables.teachers.TeachersRepository
 import com.thefuh.markinbook.database.tables.users.UsersRepository
+import com.thefuh.markinbook.routes.FileLocation
 import com.thefuh.markinbook.routes.schools.disciplines.disciplines
 import com.thefuh.markinbook.routes.schools.groups.groups
 import com.thefuh.markinbook.routes.schools.schools
@@ -26,12 +27,16 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
+import io.ktor.http.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.locations.*
+import io.ktor.response.*
 import io.ktor.util.*
 import kotlinx.serialization.json.Json
 import org.slf4j.event.Level
+import java.io.File
+import java.io.IOException
 
 const val API_NAME = "api"
 const val API_VERSION = "v1"
@@ -88,6 +93,13 @@ fun Application.module() {
         }
     }
 
+    val markinbookConfig = environment.config.config("markinbook-backend")
+    val uploadDirPath: String = markinbookConfig.property("upload.dir").getString()
+    val uploadDir = File(uploadDirPath)
+    if (!uploadDir.mkdirs() && !uploadDir.exists()) {
+        throw IOException("Failed to create directory ${uploadDir.absolutePath}")
+    }
+
     val schoolRepository = SchoolsRepository()
     val disciplineRepository = DisciplinesRepository()
 
@@ -98,24 +110,39 @@ fun Application.module() {
     val homeworksRepository = HomeworksRepository()
 
     routing {
-       trace { application.log.trace(it.buildText()) }
+//       trace { application.log.trace(it.buildText()) }
 
         schools(schoolRepository)
-        users(studentsRepository, teachersRepository, schoolRepository, groupsRepository, usersRepository, jwtService, ::hash)
+        users(
+            studentsRepository,
+            teachersRepository,
+            schoolRepository,
+            groupsRepository,
+            usersRepository,
+            jwtService,
+            ::hash
+        )
         disciplines(schoolRepository, disciplineRepository)
-        students(studentsRepository)
-        lessons(studentsRepository, lessonsRepository, groupsRepository, disciplineRepository)
+        students(studentsRepository, uploadDir)
+        lessons(studentsRepository, teachersRepository, lessonsRepository, groupsRepository, disciplineRepository)
         homeworks(lessonsRepository, homeworksRepository)
         groups(schoolRepository, groupsRepository)
-//        tasks
+        get<FileLocation> { fileLocationGet ->
+            val file = File(fileLocationGet.filePath)
+            if (file.exists()) {
+                call.respondFile(file)
+            } else {
+                call.respond(HttpStatusCode.NotFound)
+            }
+        }
     }
 
-    val root = feature(Routing)
-    val allRoutes = allRoutes(root)
-    val allRoutesWithMethod = allRoutes.filter { it.selector is HttpMethodRouteSelector }
-    allRoutesWithMethod.forEach {
-        log.info("route: $it")
-    }
+//    val root = feature(Routing)
+//    val allRoutes = allRoutes(root)
+//    val allRoutesWithMethod = allRoutes.filter { it.selector is HttpMethodRouteSelector }
+//    allRoutesWithMethod.forEach {
+//        log.info("route: $it")
+//    }
 }
 
 

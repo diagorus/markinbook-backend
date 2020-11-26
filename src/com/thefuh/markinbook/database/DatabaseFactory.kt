@@ -5,6 +5,8 @@ import com.thefuh.markinbook.database.tables.students.groups.GroupsTable
 import com.thefuh.markinbook.database.tables.students.homeworks.HomeworksTable
 import com.thefuh.markinbook.database.tables.students.homeworks.tasks.TasksTable
 import com.thefuh.markinbook.database.tables.lessons.LessonsTable
+import com.thefuh.markinbook.database.tables.students.StudentsTable
+import com.thefuh.markinbook.database.tables.teachers.TeachersTable
 import com.thefuh.markinbook.database.tables.users.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -21,7 +23,6 @@ object DatabaseFactory {
         Database.connect(hikari())
 
         transaction {
-//            exec("CREATE TYPE Role AS ENUM ('TEACHER', 'STUDENT', 'PARENT');")
             exec(
                 "DO \$\$ BEGIN\n" +
                     "    CREATE TYPE Role AS ENUM ('TEACHER', 'STUDENT', 'PARENT');\n" +
@@ -31,6 +32,9 @@ object DatabaseFactory {
             )
 
             SchemaUtils.create(UsersTable)
+            SchemaUtils.create(StudentsTable)
+            SchemaUtils.create(TeachersTable)
+
             SchemaUtils.create(TasksTable)
             SchemaUtils.create(HomeworksTable)
             SchemaUtils.create(GroupsTable)

@@ -24,6 +24,12 @@ class StudentsRepository {
         }
     }
 
+    fun updateImage(studentId: Int, image: String): StudentEntity? {
+        return StudentEntity.findById(studentId)?.apply {
+            this.profileImage = image
+        }
+    }
+
     fun getById(studentId: Int): StudentEntity? {
         return StudentEntity.findById(studentId)
     }
