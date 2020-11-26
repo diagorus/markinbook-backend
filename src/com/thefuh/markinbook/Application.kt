@@ -128,7 +128,7 @@ fun Application.module() {
         homeworks(lessonsRepository, homeworksRepository)
         groups(schoolRepository, groupsRepository)
         get<FileLocation> { fileLocationGet ->
-            val file = File(fileLocationGet.filePath)
+            val file = File(fileLocationGet.filePath.joinToString(separator = "/"))
             if (file.exists()) {
                 call.respondFile(file)
             } else {
@@ -137,12 +137,12 @@ fun Application.module() {
         }
     }
 
-//    val root = feature(Routing)
-//    val allRoutes = allRoutes(root)
-//    val allRoutesWithMethod = allRoutes.filter { it.selector is HttpMethodRouteSelector }
-//    allRoutesWithMethod.forEach {
-//        log.info("route: $it")
-//    }
+    val root = feature(Routing)
+    val allRoutes = allRoutes(root)
+    val allRoutesWithMethod = allRoutes.filter { it.selector is HttpMethodRouteSelector }
+    allRoutesWithMethod.forEach {
+        log.info("route: $it")
+    }
 }
 
 

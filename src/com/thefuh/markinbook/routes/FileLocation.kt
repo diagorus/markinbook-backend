@@ -3,5 +3,5 @@ package com.thefuh.markinbook.routes
 import io.ktor.locations.*
 
 @KtorExperimentalLocationsAPI
-@Location("/{filePath}")
-class FileLocation(val filePath: String)
+@Location("/{filePath...}")
+class FileLocation(val filePath: List<String>)
