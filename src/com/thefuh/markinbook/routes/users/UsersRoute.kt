@@ -2,12 +2,11 @@ package com.thefuh.markinbook.routes.users
 
 import com.thefuh.markinbook.auth.JwtService
 import com.thefuh.markinbook.auth.Role
-import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
-import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
-import com.thefuh.markinbook.database.tables.students.StudentsRepository
-import com.thefuh.markinbook.database.tables.students.groups.GroupsRepository
-import com.thefuh.markinbook.database.tables.teachers.TeachersRepository
-import com.thefuh.markinbook.database.tables.users.UsersRepository
+import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.routes.schools.SchoolsRepository
+import com.thefuh.markinbook.routes.schools.students.StudentsRepository
+import com.thefuh.markinbook.routes.schools.groups.GroupsRepository
+import com.thefuh.markinbook.routes.schools.teachers.TeachersRepository
 import io.ktor.application.application
 import io.ktor.application.call
 import io.ktor.application.log
@@ -67,7 +66,7 @@ fun Route.users(
 
         val passwordHash = hashFunction(password)
 
-        val newUser = when (role) {
+        val newUserId = when (role) {
             Role.STUDENT -> {
                 val groupId = parameters[UsersLocation.SignUp.GROUP_ID]?.toIntOrNull()
                     ?: return@post call.respond(
@@ -81,14 +80,14 @@ fun Route.users(
                 dbQuery {
                     val newUser = usersRepository.add(email, passwordHash, role).toUser()
                     studentsRepository.add(newUser.id, firstName, lastName, schoolEntity, groupEntity)
-                    newUser
+                    newUser.id
                 }
             }
             Role.TEACHER -> {
                 dbQuery {
                     val newUser = usersRepository.add(email, passwordHash, role).toUser()
                     teachersRepository.add(newUser.id, firstName, lastName, schoolEntity)
-                    newUser
+                    newUser.id
                 }
             }
             else -> {
@@ -98,7 +97,7 @@ fun Route.users(
 
         try {
             call.respondText(
-                jwtService.generateToken(newUser),
+                jwtService.generateToken(newUserId),
                 status = HttpStatusCode.Created
             )
         } catch (e: Throwable) {
@@ -125,7 +124,7 @@ fun Route.users(
                 //todo
             } else {
                 if (currentUser.passwordHash == hash) {
-                    call.respondText(jwtService.generateToken(currentUser))
+                    call.respondText(jwtService.generateToken(currentUser.id))
                 } else {
                     call.respond(HttpStatusCode.BadRequest, "Problems retrieving User")
                 }

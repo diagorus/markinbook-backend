@@ -1,8 +1,8 @@
 package com.thefuh.markinbook.routes.schools.groups
 
-import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
-import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
-import com.thefuh.markinbook.database.tables.students.groups.GroupsRepository
+import com.thefuh.markinbook.data.Group
+import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.routes.schools.SchoolsRepository
 import com.thefuh.markinbook.routes.schools.SchoolsLocation.School.Groups
 import io.ktor.application.*
 import io.ktor.http.*
@@ -10,6 +10,7 @@ import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import org.jetbrains.exposed.sql.SizedIterable
 
 @KtorExperimentalLocationsAPI
 fun Route.groups(
@@ -56,4 +57,15 @@ fun Route.groups(
         val newGroup = dbQuery { groupsRepository.add(title, schoolEntity).toGroup() }
         call.respond(HttpStatusCode.OK, newGroup)
     }
+}
+
+fun GroupEntity.toGroup(): Group {
+    return Group(
+        id.value,
+        title,
+    )
+}
+
+fun SizedIterable<GroupEntity>.toGroups(): List<Group> {
+    return map { it.toGroup() }
 }

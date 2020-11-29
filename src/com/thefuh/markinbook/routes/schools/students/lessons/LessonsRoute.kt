@@ -5,14 +5,12 @@ import com.thefuh.markinbook.auth.UserSession
 import com.thefuh.markinbook.auth.withAnyRole
 import com.thefuh.markinbook.auth.withRole
 import com.thefuh.markinbook.data.Day
-import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
-import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesRepository
-import com.thefuh.markinbook.database.tables.students.groups.GroupsRepository
-import com.thefuh.markinbook.database.tables.lessons.LessonsRepository
-import com.thefuh.markinbook.database.tables.students.StudentsRepository
-import com.thefuh.markinbook.database.tables.teachers.TeachersRepository
+import com.thefuh.markinbook.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.LessonsLocation
-import com.thefuh.markinbook.routes.schools.students.toStudent
+import com.thefuh.markinbook.routes.schools.disciplines.DisciplinesRepository
+import com.thefuh.markinbook.routes.schools.groups.GroupsRepository
+import com.thefuh.markinbook.routes.schools.students.StudentsRepository
+import com.thefuh.markinbook.routes.schools.teachers.TeachersRepository
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -83,9 +81,11 @@ fun Route.lessons(
                 val lessonsByWeekday = dbQuery {
                     val allLessonsInWeek = if (userSession.role == Role.STUDENT) {
                        val student = studentsRepository.getById(userSession.userId)!!
-                        lessonsRepository.getAllForWeekForGroup(student.groupId.value, mondayStartMillis, nextMondayStartMillis).toLessons()
+                        lessonsRepository.getAllForWeekForGroup(student.groupId.value, mondayStartMillis, nextMondayStartMillis)
+                            .toStudentLessons(userSession.userId)
                     } else {
-                        lessonsRepository.getAllForWeekForTeacher(userSession.userId, mondayStartMillis, nextMondayStartMillis).toLessons()
+                        lessonsRepository.getAllForWeekForTeacher(userSession.userId, mondayStartMillis, nextMondayStartMillis)
+                            .toTeacherLessons()
                     }
                     allLessonsInWeek.groupBy {
                         when (it.start) {
@@ -175,7 +175,7 @@ fun Route.lessons(
                         disciplineEntity,
                         start,
                         durationInMinutes
-                    ).toLesson()
+                    ).toTeacherLesson()
                 }
                 call.respond(HttpStatusCode.OK, addedLesson)
             }

@@ -4,21 +4,20 @@ import com.thefuh.markinbook.auth.JwtService
 import com.thefuh.markinbook.auth.UserSession
 import com.thefuh.markinbook.auth.RoleBasedAuthorization
 import com.thefuh.markinbook.auth.hash
-import com.thefuh.markinbook.database.DatabaseFactory
-import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
-import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesRepository
-import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
-import com.thefuh.markinbook.database.tables.students.StudentsRepository
-import com.thefuh.markinbook.database.tables.students.groups.GroupsRepository
-import com.thefuh.markinbook.database.tables.students.homeworks.HomeworksRepository
-import com.thefuh.markinbook.database.tables.lessons.LessonsRepository
-import com.thefuh.markinbook.database.tables.teachers.TeachersRepository
-import com.thefuh.markinbook.database.tables.users.UsersRepository
+import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.routes.schools.disciplines.DisciplinesRepository
+import com.thefuh.markinbook.routes.schools.SchoolsRepository
+import com.thefuh.markinbook.routes.schools.students.StudentsRepository
+import com.thefuh.markinbook.routes.schools.groups.GroupsRepository
+import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.HomeworksRepository
+import com.thefuh.markinbook.routes.schools.students.lessons.LessonsRepository
+import com.thefuh.markinbook.routes.schools.teachers.TeachersRepository
+import com.thefuh.markinbook.routes.users.UsersRepository
 import com.thefuh.markinbook.routes.FileLocation
 import com.thefuh.markinbook.routes.schools.disciplines.disciplines
 import com.thefuh.markinbook.routes.schools.groups.groups
 import com.thefuh.markinbook.routes.schools.schools
-import com.thefuh.markinbook.routes.schools.students.homeworks.homeworks
+import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.homeworks
 import com.thefuh.markinbook.routes.schools.students.lessons.lessons
 import com.thefuh.markinbook.routes.schools.students.students
 import com.thefuh.markinbook.routes.users.toUser
@@ -137,12 +136,12 @@ fun Application.module() {
         }
     }
 
-    val root = feature(Routing)
-    val allRoutes = allRoutes(root)
-    val allRoutesWithMethod = allRoutes.filter { it.selector is HttpMethodRouteSelector }
-    allRoutesWithMethod.forEach {
-        log.info("route: $it")
-    }
+//    val root = feature(Routing)
+//    val allRoutes = allRoutes(root)
+//    val allRoutesWithMethod = allRoutes.filter { it.selector is HttpMethodRouteSelector }
+//    allRoutesWithMethod.forEach {
+//        log.info("route: $it")
+//    }
 }
 
 

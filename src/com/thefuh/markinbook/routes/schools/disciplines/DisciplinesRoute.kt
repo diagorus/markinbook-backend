@@ -1,8 +1,7 @@
 package com.thefuh.markinbook.routes.schools.disciplines
 
-import com.thefuh.markinbook.database.DatabaseFactory.dbQuery
-import com.thefuh.markinbook.database.tables.schools.disciplines.DisciplinesRepository
-import com.thefuh.markinbook.database.tables.schools.SchoolsRepository
+import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.routes.schools.SchoolsRepository
 import com.thefuh.markinbook.routes.schools.SchoolsLocation.School.Disciplines
 import io.ktor.application.*
 import io.ktor.http.*

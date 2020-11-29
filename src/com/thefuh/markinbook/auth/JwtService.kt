@@ -17,10 +17,10 @@ class JwtService {
         .withIssuer(issuer)
         .build()
 
-    fun generateToken(user: User): String = JWT.create()
+    fun generateToken(userId: Int): String = JWT.create()
         .withSubject("Authentication")
         .withIssuer(issuer)
-        .withClaim("id", user.id)
+        .withClaim("id", userId)
         .withExpiresAt(expiresAt())
         .sign(algorithm)
 
