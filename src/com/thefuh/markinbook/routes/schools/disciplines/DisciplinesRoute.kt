@@ -17,23 +17,11 @@ fun Route.disciplines(
     schoolsRepository: SchoolsRepository,
     disciplinesRepository: DisciplinesRepository
 ) {
-    get<Disciplines> {
-        val allDisciplines = dbQuery { disciplinesRepository.getAll().toDisciplines() }
+    get<Disciplines> { disciplinesGet ->
+        val allDisciplines = dbQuery { disciplinesRepository.getAllBySchool(disciplinesGet.school.schoolId).toDisciplines() }
         call.respond(HttpStatusCode.OK, allDisciplines)
     }
-
-//    authenticate("jwt") {
     post<Disciplines.Add> { disciplinesAdd ->
-//            val user = call.sessions.get<MySession>()?.let {
-//                db.findUser(it.userId)
-//            }
-//            if (user == null) {
-//                call.respond(
-//                    HttpStatusCode.BadRequest, "Problems retrieving User"
-//                )
-//                return@post
-//            }
-
         val school = try {
            dbQuery { schoolsRepository.getById(disciplinesAdd.disciplines.school.schoolId) }
         } catch (e: Exception) {
@@ -63,7 +51,6 @@ fun Route.disciplines(
             }
         }
     }
-
     get<Disciplines.Discipline> { discipline ->
         val foundDiscipline = dbQuery { disciplinesRepository.getById(discipline.disciplineId)?.toDiscipline() }
         if (foundDiscipline == null) {
@@ -72,19 +59,4 @@ fun Route.disciplines(
             call.respond(HttpStatusCode.OK, foundDiscipline)
         }
     }
-//        get<DisciplineRoute> {
-//            val user = call.sessions.get<MySession>()?.let { db.findUser(it.userId) }
-//            if (user == null) {
-//                call.respond(HttpStatusCode.BadRequest, "Problems retrieving User")
-//                return@get
-//            }
-//            try {
-//                val todos = db.getTodos(user.userId)
-//                call.respond(todos)
-//            } catch (e: Throwable) {
-//                application.log.error("Failed to get Todos", e)
-//                call.respond(HttpStatusCode.BadRequest, "Problems getting Todos")
-//            }
-//        }
-//    }
 }

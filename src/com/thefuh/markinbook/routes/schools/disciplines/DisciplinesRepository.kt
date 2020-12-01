@@ -3,11 +3,14 @@ package com.thefuh.markinbook.routes.schools.disciplines
 import com.thefuh.markinbook.data.Discipline
 import com.thefuh.markinbook.routes.schools.SchoolEntity
 import com.thefuh.markinbook.routes.schools.SchoolsTable
+import com.thefuh.markinbook.routes.schools.groups.GroupEntity
+import com.thefuh.markinbook.routes.schools.groups.GroupsTable
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.SizedIterable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class DisciplinesRepository {
 
@@ -18,8 +21,8 @@ class DisciplinesRepository {
         }
     }
 
-    fun getAll(): SizedIterable<DisciplineEntity> {
-        return DisciplineEntity.all()
+    fun getAllBySchool(schoolId: Int): SizedIterable<DisciplineEntity> {
+        return DisciplineEntity.find { DisciplinesTable.schoolId eq schoolId }
     }
 
     fun getById(id: Int): DisciplineEntity? {

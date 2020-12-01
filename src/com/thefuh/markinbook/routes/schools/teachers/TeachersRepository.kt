@@ -1,5 +1,6 @@
 package com.thefuh.markinbook.routes.schools.teachers
 
+import com.thefuh.markinbook.data.roles.Teacher
 import com.thefuh.markinbook.routes.schools.SchoolEntity
 import com.thefuh.markinbook.routes.schools.SchoolsTable
 import org.jetbrains.exposed.dao.IntEntity
@@ -41,4 +42,13 @@ class TeacherEntity(id: EntityID<Int>) : IntEntity(id) {
     var firstName by TeachersTable.firstName
     var lastName by TeachersTable.lastName
     var schoolId by TeachersTable.schoolId
+}
+
+fun TeacherEntity.toTeacher(): Teacher {
+    return Teacher(
+        id.value,
+        firstName,
+        lastName,
+        schoolId.value
+    )
 }

@@ -66,14 +66,26 @@ class StudentsLocation {
 }
 
 @KtorExperimentalLocationsAPI
+@Location("$API_NAME/$API_VERSION/teachers")
+class TeachersLocation {
+
+    @Location("/current")
+    class Current(val students: TeachersLocation) {
+
+        @Location("/add-profile-image")
+        class AddProfileImage(val current: Current)
+    }
+}
+
+@KtorExperimentalLocationsAPI
 @Location("$API_NAME/$API_VERSION/lessons")
 class LessonsLocation {
 
     @Location("/add")
     class Add(val lessons: LessonsLocation) {
         companion object {
-            const val ARG_DISCIPLINE_ID = "disciplineId"
             const val ARG_GROUP_ID = "groupId"
+            const val ARG_DISCIPLINE_ID = "disciplineId"
             const val ARG_START = "start"
             const val ARG_DURATION_IN_MINUTES = "durationInMinutes"
         }

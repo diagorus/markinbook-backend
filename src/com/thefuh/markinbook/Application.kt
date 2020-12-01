@@ -20,6 +20,7 @@ import com.thefuh.markinbook.routes.schools.schools
 import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.homeworks
 import com.thefuh.markinbook.routes.schools.students.lessons.lessons
 import com.thefuh.markinbook.routes.schools.students.students
+import com.thefuh.markinbook.routes.schools.teachers.teachers
 import com.thefuh.markinbook.routes.users.toUser
 import com.thefuh.markinbook.routes.users.users
 import io.ktor.application.*
@@ -58,6 +59,8 @@ fun Application.module() {
     }
     install(Locations)
     install(CORS) {
+        header(HttpHeaders.Authorization)
+        header(HttpHeaders.AccessControlAllowOrigin)
         anyHost()
     }
 
@@ -67,19 +70,10 @@ fun Application.module() {
 
     val usersRepository = UsersRepository()
 
-//    install(Sessions) {
-//        header<UserSession>("Authorization", SessionStorageMemory())
-//    }
     install(RoleBasedAuthorization) {
         getRoles { (it as UserSession).role }
     }
     install(Authentication) {
-//        session<UserSession> {
-//            validate {
-//                val user = dbQuery { usersRepository.getById(it.userId)?.toUser() }
-//                user?.let { UserSession(it.id, it.role) }
-//            }
-//        }
         jwt {
             verifier(jwtService.verifier)
             realm = "markinbook-backend"
@@ -123,9 +117,11 @@ fun Application.module() {
         )
         disciplines(schoolRepository, disciplineRepository)
         students(studentsRepository, uploadDir)
+        teachers(teachersRepository)
         lessons(studentsRepository, teachersRepository, lessonsRepository, groupsRepository, disciplineRepository)
         homeworks(lessonsRepository, homeworksRepository)
         groups(schoolRepository, groupsRepository)
+
         get<FileLocation> { fileLocationGet ->
             val file = File(fileLocationGet.filePath.joinToString(separator = "/"))
             if (file.exists()) {

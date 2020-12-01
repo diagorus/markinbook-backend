@@ -119,54 +119,21 @@ fun Route.lessons(
         }
         withRole(Role.TEACHER) {
             post<LessonsLocation.Add> {
-                val userId = call.principal<UserSession>()?.userId
+                val userId = call.principal<UserSession>()?.userId!!
 
-                if (userId == null) {
-                    //todo
-                    return@post
-                }
-
-                val teacherEntity = teachersRepository.getById(userId)
-                if (teacherEntity == null) {
-                    //todo
-                    return@post
-                }
+                val teacherEntity = teachersRepository.getById(userId)!!
 
                 val parameters = call.receiveParameters()
 
-                val groupId = parameters[LessonsLocation.Add.ARG_GROUP_ID]?.toIntOrNull()
-                if (groupId == null) {
-                    //todo
-                    return@post
-                }
-                val groupEntity = dbQuery { groupsRepository.getById(groupId) }
-                if (groupEntity == null) {
-                    //todo
-                    return@post
-                }
+                val groupId = parameters[LessonsLocation.Add.ARG_GROUP_ID]?.toIntOrNull()!!
+                val groupEntity = dbQuery { groupsRepository.getById(groupId) }!!
 
-                val disciplineId = parameters[LessonsLocation.Add.ARG_DISCIPLINE_ID]?.toIntOrNull()
-                if (disciplineId == null) {
-                    //todo
-                    return@post
-                }
-                val disciplineEntity = disciplinesRepository.getById(disciplineId)
-                if (disciplineEntity == null) {
-                    //todo
-                    return@post
-                }
+                val disciplineId = parameters[LessonsLocation.Add.ARG_DISCIPLINE_ID]?.toIntOrNull()!!
+                val disciplineEntity = disciplinesRepository.getById(disciplineId)!!
 
-                val start = parameters[LessonsLocation.Add.ARG_START]?.toLongOrNull()
-                if (start == null) {
-                    //todo
-                    return@post
-                }
+                val start = parameters[LessonsLocation.Add.ARG_START]?.toLongOrNull()!!
 
-                val durationInMinutes = parameters[LessonsLocation.Add.ARG_DURATION_IN_MINUTES]?.toIntOrNull()
-                if (durationInMinutes == null) {
-                    //todo
-                    return@post
-                }
+                val durationInMinutes = parameters[LessonsLocation.Add.ARG_DURATION_IN_MINUTES]?.toIntOrNull()!!
 
                 val addedLesson = dbQuery {
                     lessonsRepository.add(
