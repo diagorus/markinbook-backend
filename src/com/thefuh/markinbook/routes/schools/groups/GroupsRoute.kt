@@ -4,6 +4,7 @@ import com.thefuh.markinbook.data.Group
 import com.thefuh.markinbook.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.SchoolsRepository
 import com.thefuh.markinbook.routes.schools.SchoolsLocation.School.Groups
+import com.thefuh.markinbook.routes.schools.students.toStudents
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.locations.*
@@ -19,40 +20,21 @@ fun Route.groups(
 ) {
     get<Groups> { groupsGet ->
         val schoolId = groupsGet.school.schoolId
-        val schoolEntity = dbQuery { schoolsRepository.getById(schoolId) }
-
-        if (schoolEntity == null) {
-            //todo
-            return@get
-        }
+        val schoolEntity = dbQuery { schoolsRepository.getById(schoolId) }!!
 
         val groupsInSchool = dbQuery { groupsRepository.getAllBySchool(schoolEntity).toGroups() }
         call.respond(HttpStatusCode.OK, groupsInSchool)
     }
     get<Groups.Group> { groupGet ->
         val group = dbQuery { groupsRepository.getById(groupGet.groupId)?.toGroup() }
-        if (group == null) {
-            //todo
-        } else {
-            call.respond(HttpStatusCode.OK, group)
-        }
+        call.respond(HttpStatusCode.OK, group!!)
     }
     post<Groups.Add> { groupsAdd ->
         val schoolId = groupsAdd.groups.school.schoolId
-        val schoolEntity = dbQuery { schoolsRepository.getById(schoolId) }
-
-        if (schoolEntity == null) {
-            //todo
-            return@post
-        }
+        val schoolEntity = dbQuery { schoolsRepository.getById(schoolId)!! }
 
         val formParams = call.receiveParameters()
-        val title = formParams[Groups.Add.ARG_TITLE]
-
-        if (title.isNullOrEmpty()) {
-            //todo
-            return@post
-        }
+        val title = formParams[Groups.Add.ARG_TITLE]!!
 
         val newGroup = dbQuery { groupsRepository.add(title, schoolEntity).toGroup() }
         call.respond(HttpStatusCode.OK, newGroup)
@@ -63,6 +45,7 @@ fun GroupEntity.toGroup(): Group {
     return Group(
         id.value,
         title,
+        students.toStudents()
     )
 }
 

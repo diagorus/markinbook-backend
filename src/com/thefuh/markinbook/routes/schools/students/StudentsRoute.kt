@@ -1,6 +1,6 @@
 package com.thefuh.markinbook.routes.schools.students
 
-import com.thefuh.markinbook.auth.UserSession
+import com.thefuh.markinbook.auth.UserPrincipal
 import com.thefuh.markinbook.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.StudentsLocation
 import com.thefuh.markinbook.utils.copyToSuspend
@@ -13,13 +13,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.yield
 import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
 
 @KtorExperimentalLocationsAPI
 fun Route.students(
@@ -40,7 +34,7 @@ fun Route.students(
             }
         }
         get<StudentsLocation.Current> {
-            val userId = call.principal<UserSession>()?.userId
+            val userId = call.principal<UserPrincipal>()?.userId
             if (userId == null) {
                 //todo
                 return@get
@@ -54,7 +48,7 @@ fun Route.students(
             }
         }
         post<StudentsLocation.Current.AddProfileImage> {
-            val userId = call.principal<UserSession>()?.userId!!
+            val userId = call.principal<UserPrincipal>()?.userId!!
 
             val multipart = call.receiveMultipart()
             var title = ""

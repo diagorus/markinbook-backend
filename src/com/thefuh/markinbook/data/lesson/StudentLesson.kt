@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class StudentLesson(
+    override val id: Int,
     override val group: Group,
     override val discipline: Discipline,
     override val start: Long,

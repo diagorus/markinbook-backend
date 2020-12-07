@@ -1,7 +1,7 @@
 package com.thefuh.markinbook
 
 import com.thefuh.markinbook.auth.JwtService
-import com.thefuh.markinbook.auth.UserSession
+import com.thefuh.markinbook.auth.UserPrincipal
 import com.thefuh.markinbook.auth.RoleBasedAuthorization
 import com.thefuh.markinbook.auth.hash
 import com.thefuh.markinbook.DatabaseFactory.dbQuery
@@ -19,6 +19,8 @@ import com.thefuh.markinbook.routes.schools.groups.groups
 import com.thefuh.markinbook.routes.schools.schools
 import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.homeworks
 import com.thefuh.markinbook.routes.schools.students.lessons.lessons
+import com.thefuh.markinbook.routes.schools.students.lessons.marks.MarksRepository
+import com.thefuh.markinbook.routes.schools.students.lessons.marks.marks
 import com.thefuh.markinbook.routes.schools.students.students
 import com.thefuh.markinbook.routes.schools.teachers.teachers
 import com.thefuh.markinbook.routes.users.toUser
@@ -71,7 +73,7 @@ fun Application.module() {
     val usersRepository = UsersRepository()
 
     install(RoleBasedAuthorization) {
-        getRoles { (it as UserSession).role }
+        getRoles { (it as UserPrincipal).role }
     }
     install(Authentication) {
         jwt {
@@ -81,7 +83,7 @@ fun Application.module() {
                 val payload = it.payload
                 val userId = payload.getClaim("id").asInt()
                 val user = dbQuery { usersRepository.getById(userId)?.toUser() }
-                user?.let { UserSession(it.id, it.role) }
+                user?.let { UserPrincipal(it.id, it.role) }
             }
         }
     }
@@ -101,6 +103,7 @@ fun Application.module() {
     val lessonsRepository = LessonsRepository()
     val groupsRepository = GroupsRepository()
     val homeworksRepository = HomeworksRepository()
+    val marksRepository = MarksRepository()
 
     routing {
 //       trace { application.log.trace(it.buildText()) }
@@ -121,7 +124,7 @@ fun Application.module() {
         lessons(studentsRepository, teachersRepository, lessonsRepository, groupsRepository, disciplineRepository)
         homeworks(lessonsRepository, homeworksRepository)
         groups(schoolRepository, groupsRepository)
-
+        marks(lessonsRepository, homeworksRepository, studentsRepository, marksRepository)
         get<FileLocation> { fileLocationGet ->
             val file = File(fileLocationGet.filePath.joinToString(separator = "/"))
             if (file.exists()) {

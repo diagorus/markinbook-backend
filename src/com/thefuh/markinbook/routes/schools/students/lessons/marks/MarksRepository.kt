@@ -15,7 +15,14 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.SizedIterable
 
 class MarksRepository {
-
+    fun add(student: StudentEntity, lesson: LessonEntity?, homework: HomeworkEntity?, value: Int): MarkEntity {
+        return MarkEntity.new {
+            this.student = student
+            this.lesson = lesson
+            this.homework = homework
+            this.value = value
+        }
+    }
 }
 
 object MarksTable : IntIdTable() {

@@ -1,7 +1,7 @@
 package com.thefuh.markinbook.routes.schools.students.lessons
 
 import com.thefuh.markinbook.auth.Role
-import com.thefuh.markinbook.auth.UserSession
+import com.thefuh.markinbook.auth.UserPrincipal
 import com.thefuh.markinbook.auth.withAnyRole
 import com.thefuh.markinbook.auth.withRole
 import com.thefuh.markinbook.data.Day
@@ -31,12 +31,7 @@ fun Route.lessons(
     authenticate {
         withAnyRole(Role.STUDENT, Role.TEACHER) {
             get<LessonsLocation.ByDays> { byDays ->
-                val userSession = call.principal<UserSession>()
-
-                if (userSession == null) {
-                    //todo
-                    return@get
-                }
+                val userPrincipal = call.principal<UserPrincipal>()!!
 
                 val calendar = Calendar.getInstance().apply {
                     set(Calendar.MILLISECOND, 0)
@@ -79,12 +74,20 @@ fun Route.lessons(
                     .timeInMillis
 
                 val lessonsByWeekday = dbQuery {
-                    val allLessonsInWeek = if (userSession.role == Role.STUDENT) {
-                       val student = studentsRepository.getById(userSession.userId)!!
-                        lessonsRepository.getAllForWeekForGroup(student.groupId.value, mondayStartMillis, nextMondayStartMillis)
-                            .toStudentLessons(userSession.userId)
+                    val allLessonsInWeek = if (userPrincipal.role == Role.STUDENT) {
+                        val student = studentsRepository.getById(userPrincipal.userId)!!
+                        lessonsRepository.getAllForWeekForGroup(
+                            student.groupId.value,
+                            mondayStartMillis,
+                            nextMondayStartMillis
+                        )
+                            .toStudentLessons(userPrincipal.userId)
                     } else {
-                        lessonsRepository.getAllForWeekForTeacher(userSession.userId, mondayStartMillis, nextMondayStartMillis)
+                        lessonsRepository.getAllForWeekForTeacher(
+                            userPrincipal.userId,
+                            mondayStartMillis,
+                            nextMondayStartMillis
+                        )
                             .toTeacherLessons()
                     }
                     allLessonsInWeek.groupBy {
@@ -116,12 +119,31 @@ fun Route.lessons(
                 }
                 call.respond(HttpStatusCode.OK, lessonsByWeekday)
             }
+            get<LessonsLocation.Lesson> { getLesson ->
+                val userPrincipal = call.principal<UserPrincipal>()!!
+
+                val lesson = dbQuery {
+                    val rawLesson = lessonsRepository.getById(getLesson.lessonId)
+                    when (userPrincipal.role) {
+                        Role.STUDENT -> {
+                            rawLesson?.toStudentLesson(userPrincipal.userId)
+                        }
+                        Role.TEACHER -> {
+                            rawLesson?.toTeacherLesson()
+                        }
+                        else -> {
+                            null
+                        }
+                    }
+                }
+                call.respond(HttpStatusCode.OK, lesson!!)
+            }
         }
         withRole(Role.TEACHER) {
             post<LessonsLocation.Add> {
-                val userId = call.principal<UserSession>()?.userId!!
+                val userId = call.principal<UserPrincipal>()?.userId!!
 
-                val teacherEntity = teachersRepository.getById(userId)!!
+                val teacherEntity = dbQuery { teachersRepository.getById(userId)!! }
 
                 val parameters = call.receiveParameters()
 
@@ -129,7 +151,7 @@ fun Route.lessons(
                 val groupEntity = dbQuery { groupsRepository.getById(groupId) }!!
 
                 val disciplineId = parameters[LessonsLocation.Add.ARG_DISCIPLINE_ID]?.toIntOrNull()!!
-                val disciplineEntity = disciplinesRepository.getById(disciplineId)!!
+                val disciplineEntity = dbQuery { disciplinesRepository.getById(disciplineId) }!!
 
                 val start = parameters[LessonsLocation.Add.ARG_START]?.toLongOrNull()!!
 

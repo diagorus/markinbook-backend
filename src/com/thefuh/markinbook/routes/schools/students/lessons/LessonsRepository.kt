@@ -84,8 +84,6 @@ object LessonsTable : IntIdTable() {
     val start = long("start")
     val durationInMinutes = integer("durationInMinutes")
     val homeworkId = reference("homeworkId", HomeworksTable).nullable()
-    val location = text("location")
-    val mark = integer("mark").nullable()
 }
 
 class LessonEntity(id: EntityID<Int>) : IntEntity(id) {
@@ -102,6 +100,7 @@ class LessonEntity(id: EntityID<Int>) : IntEntity(id) {
 
 fun LessonEntity.toTeacherLesson(): TeacherLesson {
     return TeacherLesson(
+        id.value,
         group.toGroup(),
         discipline.toDiscipline(),
         start,
@@ -117,6 +116,7 @@ fun SizedIterable<LessonEntity>.toTeacherLessons(): List<TeacherLesson> {
 
 fun LessonEntity.toStudentLesson(studentId: Int): StudentLesson {
     return StudentLesson(
+        id.value,
         group.toGroup(),
         discipline.toDiscipline(),
         start,

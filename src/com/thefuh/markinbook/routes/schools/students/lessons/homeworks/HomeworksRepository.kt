@@ -2,6 +2,7 @@ package com.thefuh.markinbook.routes.schools.students.lessons.homeworks
 
 import com.thefuh.markinbook.data.lesson.homework.StudentHomework
 import com.thefuh.markinbook.data.lesson.homework.TeacherHomework
+import com.thefuh.markinbook.routes.schools.groups.GroupEntity
 import com.thefuh.markinbook.routes.schools.students.lessons.LessonEntity
 import com.thefuh.markinbook.routes.schools.students.lessons.LessonsTable
 import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.tasks.TaskEntity
@@ -22,6 +23,10 @@ class HomeworksRepository {
             this.lesson = lesson
         }
     }
+
+    fun getById(id: Int): HomeworkEntity? {
+        return HomeworkEntity.findById(id)
+    }
 }
 
 object HomeworksTable : IntIdTable() {
@@ -38,6 +43,7 @@ class HomeworkEntity(id: EntityID<Int>) : IntEntity(id) {
 
 fun HomeworkEntity.toTeacherHomework(): TeacherHomework {
     return TeacherHomework(
+        id.value,
         marks.toTeacherMarks(),
         tasks.toTasks(),
     )
@@ -45,6 +51,7 @@ fun HomeworkEntity.toTeacherHomework(): TeacherHomework {
 
 fun HomeworkEntity.toStudentHomework(studentId: Int): StudentHomework {
     return StudentHomework(
+        id.value,
         marks.find { it.student.id.value == studentId }?.value,
         tasks.toTasks(),
     )

@@ -94,14 +94,14 @@ class LessonsLocation {
     @Location("/{lessonId}")
     class Lesson(val lessons: LessonsLocation, val lessonId: Int) {
 
-        @Location("/homeworks")
-        data class Homeworks(val lesson: Lesson) {
+        @Location("/marks")
+        data class Marks(val lesson: Lesson) {
 
-            //todo?
             @Location("/add")
-            data class Add(val homeworks: Homeworks) {
+            data class Add(val marks: Marks) {
                 companion object {
-
+                    const val ARG_STUDENT_ID = "studentId"
+                    const val ARG_VALUE = "value"
                 }
             }
         }
@@ -109,4 +109,29 @@ class LessonsLocation {
 
     @Location("/by-days")
     class ByDays(val lessons: LessonsLocation, val week: Int, val year: Int)
+}
+
+@KtorExperimentalLocationsAPI
+@Location("$API_NAME/$API_VERSION/homeworks")
+class HomeworksLocation {
+
+//    @Location("/add")
+//    data class Add(val homeworks: Homeworks) {
+//    }
+
+    @Location("/{homeworkId}")
+    data class Homework(val homeworks: HomeworksLocation, val homeworkId: Int) {
+
+        @Location("/marks")
+        data class Marks(val homework: Homework) {
+
+            @Location("/add")
+            data class Add(val marks: Marks) {
+                companion object {
+                    const val ARG_STUDENT_ID = "studentId"
+                    const val ARG_VALUE = "value"
+                }
+            }
+        }
+    }
 }

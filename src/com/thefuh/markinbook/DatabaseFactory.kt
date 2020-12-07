@@ -6,6 +6,7 @@ import com.thefuh.markinbook.routes.schools.students.StudentsTable
 import com.thefuh.markinbook.routes.schools.students.lessons.LessonsTable
 import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.HomeworksTable
 import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.tasks.TasksTable
+import com.thefuh.markinbook.routes.schools.students.lessons.marks.MarksTable
 import com.thefuh.markinbook.routes.schools.teachers.TeachersTable
 import com.thefuh.markinbook.routes.users.UsersTable
 import com.zaxxer.hikari.HikariConfig
@@ -40,6 +41,7 @@ object DatabaseFactory {
             SchemaUtils.create(GroupsTable)
             SchemaUtils.create(DisciplinesTable)
             SchemaUtils.create(LessonsTable)
+            SchemaUtils.create(MarksTable)
         }
     }
 
