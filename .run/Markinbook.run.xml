@@ -15,6 +15,7 @@
       <env name="JWT_SECRET" value="898748674728934843" />
       <env name="DB_PASSWORD" value="12321" />
       <env name="DB_USER" value="postgres" />
+      <env name="GOOGLE_APPLICATION_CREDENTIALS" value="markinbook-firebase-adminsdk-9zcyc-6ca59a3190.json" />
     </envs>
     <method v="2">
       <option name="Make" enabled="true" />

@@ -3,6 +3,7 @@ package com.thefuh.markinbook.routes.users
 import com.thefuh.markinbook.auth.JwtService
 import com.thefuh.markinbook.auth.Role
 import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.auth.withRole
 import com.thefuh.markinbook.routes.schools.SchoolsRepository
 import com.thefuh.markinbook.routes.schools.students.StudentsRepository
 import com.thefuh.markinbook.routes.schools.groups.GroupsRepository
@@ -10,6 +11,7 @@ import com.thefuh.markinbook.routes.schools.teachers.TeachersRepository
 import io.ktor.application.application
 import io.ktor.application.call
 import io.ktor.application.log
+import io.ktor.auth.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.locations.*
@@ -133,8 +135,5 @@ fun Route.users(
             application.log.error("Failed to register user", e)
             call.respond(HttpStatusCode.BadRequest, "Problems retrieving User")
         }
-    }
-    post<UsersLocation.SignOut> {
-        //todo
     }
 }

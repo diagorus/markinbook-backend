@@ -19,7 +19,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 class HomeworksRepository {
 
     fun add(lesson: LessonEntity): HomeworkEntity {
-        return HomeworkEntity.new{
+        return HomeworkEntity.new {
             this.lesson = lesson
         }
     }
@@ -36,7 +36,7 @@ object HomeworksTable : IntIdTable() {
 class HomeworkEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<HomeworkEntity>(HomeworksTable)
 
-    var lesson by LessonEntity optionalReferencedOn LessonsTable.homeworkId
+    var lesson by LessonEntity referencedOn HomeworksTable.lessonId
     val tasks by TaskEntity referrersOn TasksTable.homeworkId
     val marks by MarkEntity optionalReferrersOn MarksTable.homeworkId
 }

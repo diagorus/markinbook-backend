@@ -8,6 +8,7 @@ import io.ktor.locations.*
 @Location("$API_NAME/$API_VERSION/users")
 class UsersLocation {
 
+
     @Location("{role}/signUp")
     data class SignUp(val users: UsersLocation, val role: String) {
         companion object {
@@ -31,4 +32,14 @@ class UsersLocation {
 
     @Location("/signOut")
     data class SignOut(val users: UsersLocation)
+
+    @Location("/tokens")
+    data class PushTokens(val users: UsersLocation) {
+
+        data class Add(val tokens: PushTokens) {
+            companion object {
+                const val ARG_TOKEN = "token"
+            }
+        }
+    }
 }

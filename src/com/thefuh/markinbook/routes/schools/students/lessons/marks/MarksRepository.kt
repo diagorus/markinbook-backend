@@ -13,6 +13,7 @@ import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.SizedIterable
+import org.jetbrains.exposed.sql.and
 
 class MarksRepository {
     fun add(student: StudentEntity, lesson: LessonEntity?, homework: HomeworkEntity?, value: Int): MarkEntity {
@@ -22,6 +23,14 @@ class MarksRepository {
             this.homework = homework
             this.value = value
         }
+    }
+
+    fun getByStudentIdAndLesson(studentId: Int, lesson: LessonEntity): SizedIterable<MarkEntity> {
+        return MarkEntity.find { (MarksTable.studentId eq studentId) and (MarksTable.lessonId eq lesson.id) }
+    }
+
+    fun getByStudentIdAndHomework(studentId: Int, homework: HomeworkEntity): SizedIterable<MarkEntity> {
+       return MarkEntity.find { (MarksTable.studentId eq studentId) and (MarksTable.lessonId eq homework.id) }
     }
 }
 

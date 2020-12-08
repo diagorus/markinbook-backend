@@ -46,6 +46,8 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
+    implementation("com.google.firebase:firebase-admin:7.0.1")
+
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
 
     testImplementation(platform("org.junit:junit-bom:5.7.0"))
