@@ -24,42 +24,48 @@ class PushManager(
 
     suspend fun pushHomeworkMark(userId: Int, homeworkId: Int, disciplineTitle: String) {
         val token = getUserToken(userId)
-        val message = Message.builder()
-            .putData(KEY_TYPE, PushType.HOMEWORK_MARK.title)
-            .putData(KEY_HOMEWORK_ID, homeworkId.toString())
-            .putData(KEY_DISCIPLINE_TITLE, disciplineTitle)
-            .setToken(token)
-            .build()
-        val response = FirebaseMessaging.getInstance().send(message)
-        log.info("Successfully sent message: $response")
+        token?.let {
+            val message = Message.builder()
+                .putData(KEY_TYPE, PushType.HOMEWORK_MARK.title)
+                .putData(KEY_HOMEWORK_ID, homeworkId.toString())
+                .putData(KEY_DISCIPLINE_TITLE, disciplineTitle)
+                .setToken(token)
+                .build()
+            val response = FirebaseMessaging.getInstance().send(message)
+            log.info("Successfully sent message: $response")
+        }
     }
 
     suspend fun pushLessonMark(userId: Int, lessonId: Int, disciplineTitle: String) {
         val token = getUserToken(userId)
-        val message = Message.builder()
-            .putData(KEY_TYPE, PushType.LESSON_MARK.title)
-            .putData(KEY_LESSON_ID, lessonId.toString())
-            .putData(KEY_DISCIPLINE_TITLE, disciplineTitle)
-            .setToken(token)
-            .build()
-        val response = FirebaseMessaging.getInstance().send(message)
-        log.info("Successfully sent message: $response")
+        token?.let {
+            val message = Message.builder()
+                .putData(KEY_TYPE, PushType.LESSON_MARK.title)
+                .putData(KEY_LESSON_ID, lessonId.toString())
+                .putData(KEY_DISCIPLINE_TITLE, disciplineTitle)
+                .setToken(it)
+                .build()
+            val response = FirebaseMessaging.getInstance().send(message)
+            log.info("Successfully sent message: $response")
+        }
     }
 
     suspend fun pushHomeworkAdded(groupId: Int, homeworkId: Int, disciplineTitle: String) {
         val tokens = getGroupUserTokens(groupId)
+        if (tokens.isNotEmpty()) {
+            val message = MulticastMessage.builder()
+                .putData(KEY_TYPE, PushType.HOMEWORK_ADDED.title)
+                .putData(KEY_HOMEWORK_ID, homeworkId.toString())
+                .putData(KEY_DISCIPLINE_TITLE, disciplineTitle)
+                .addAllTokens(tokens)
+                .build()
+            val response = FirebaseMessaging.getInstance().sendMulticast(message)
+            log.info("${response.successCount} messages were sent successfully")
 
-        val message = MulticastMessage.builder()
-            .putData(KEY_TYPE, PushType.HOMEWORK_ADDED.title)
-            .putData(KEY_HOMEWORK_ID, homeworkId.toString())
-            .putData(KEY_DISCIPLINE_TITLE, disciplineTitle)
-            .addAllTokens(tokens)
-            .build()
-        val response = FirebaseMessaging.getInstance().sendMulticast(message)
-        log.info("${response.successCount} messages were sent successfully")
+        }
     }
 
-    private suspend fun getUserToken(userId: Int) = dbQuery { pushTokensRepository.getByUserId(userId).single().token }
+    private suspend fun getUserToken(userId: Int) = dbQuery { pushTokensRepository.getByUserId(userId).firstOrNull()?.token }
 
     private suspend fun getGroupUserTokens(groupId: Int) = dbQuery {
         val userIds = groupsRepository.getById(groupId)!!.students.map { it.id.value }

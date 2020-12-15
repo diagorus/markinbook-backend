@@ -97,14 +97,6 @@ class LessonsLocation {
         @Location("/homeworks")
         class Homeworks(val lesson: Lesson) {
 
-            @Location("/add")
-            data class Add(val homeworks: Homeworks) {
-
-                companion object {
-                    const val ARG_TASK_DESCRIPTION = "taskDescription"
-                }
-            }
-
             @Location("/{homeworkId}")
             data class Homework(val homeworks: Homeworks, val homeworkId: Int) {
 

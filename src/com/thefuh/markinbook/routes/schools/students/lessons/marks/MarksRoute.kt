@@ -64,7 +64,9 @@ fun Route.marks(
                 }
 
                 val homeworkId = dbQuery { homework.id.value }
-                val disciplineTitle = dbQuery { homework.lesson.discipline.title }
+
+                val lessonId = postMarksAdd.marks.homework.homeworks.lesson.lessonId
+                val disciplineTitle = dbQuery { lessonsRepository.getById(lessonId)?.discipline?.title }!!
                 pushManager.pushHomeworkMark(studentId, homeworkId, disciplineTitle)
                 call.respond(HttpStatusCode.OK, newMark)
             }

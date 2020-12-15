@@ -36,6 +36,7 @@ class UsersLocation {
     @Location("/tokens")
     data class PushTokens(val users: UsersLocation) {
 
+        @Location("/add")
         data class Add(val tokens: PushTokens) {
             companion object {
                 const val ARG_TOKEN = "token"

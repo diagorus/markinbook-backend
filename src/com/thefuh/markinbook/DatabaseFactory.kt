@@ -9,6 +9,7 @@ import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.tasks.Tas
 import com.thefuh.markinbook.routes.schools.students.lessons.marks.MarksTable
 import com.thefuh.markinbook.routes.schools.teachers.TeachersTable
 import com.thefuh.markinbook.routes.users.UsersTable
+import com.thefuh.markinbook.routes.users.tokens.PushTokensTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +33,7 @@ object DatabaseFactory {
                     "END \$\$;"
             )
 
+            SchemaUtils.create(PushTokensTable)
             SchemaUtils.create(UsersTable)
             SchemaUtils.create(StudentsTable)
             SchemaUtils.create(TeachersTable)

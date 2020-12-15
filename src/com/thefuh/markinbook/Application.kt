@@ -17,7 +17,6 @@ import com.thefuh.markinbook.routes.FileLocation
 import com.thefuh.markinbook.routes.schools.disciplines.disciplines
 import com.thefuh.markinbook.routes.schools.groups.groups
 import com.thefuh.markinbook.routes.schools.schools
-import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.homeworks
 import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.tasks.TasksRepository
 import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.tasks.tasks
 import com.thefuh.markinbook.routes.schools.students.lessons.lessons
@@ -142,9 +141,8 @@ fun Application.module() {
         disciplines(schoolRepository, disciplineRepository)
         students(studentsRepository, uploadDir)
         teachers(teachersRepository)
-        lessons(studentsRepository, teachersRepository, lessonsRepository, groupsRepository, disciplineRepository)
-        homeworks(lessonsRepository, homeworksRepository, tasksRepository, pushManager)
-        tasks(homeworksRepository, tasksRepository)
+        lessons(studentsRepository, teachersRepository, lessonsRepository, homeworksRepository, groupsRepository, disciplineRepository)
+        tasks(lessonsRepository, homeworksRepository, tasksRepository, pushManager)
         groups(schoolRepository, groupsRepository)
         marks(lessonsRepository, homeworksRepository, studentsRepository, marksRepository, pushManager)
         pushTokens(usersRepository, pushTokensRepository)

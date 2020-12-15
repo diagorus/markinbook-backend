@@ -33,6 +33,7 @@ class LessonsRepository {
         discipline: DisciplineEntity,
         start: Long,
         durationInMinutes: Int,
+        homework: HomeworkEntity
     ): LessonEntity {
         return LessonEntity.new {
             this.teacher = teacher
@@ -40,6 +41,7 @@ class LessonsRepository {
             this.discipline = discipline
             this.start = start
             this.durationInMinutes = durationInMinutes
+            this.homework = homework
         }
     }
 
@@ -66,7 +68,6 @@ class LessonsRepository {
                     (LessonsTable.start lessEq weekEndMillis)
         }
     }
-
 
     fun getAllByTeacherId(teacherId: Int): SizedIterable<LessonEntity> {
         return LessonEntity.find { LessonsTable.teacherId eq teacherId }

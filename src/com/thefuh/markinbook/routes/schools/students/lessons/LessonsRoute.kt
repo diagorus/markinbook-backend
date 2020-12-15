@@ -10,6 +10,7 @@ import com.thefuh.markinbook.routes.schools.LessonsLocation
 import com.thefuh.markinbook.routes.schools.disciplines.DisciplinesRepository
 import com.thefuh.markinbook.routes.schools.groups.GroupsRepository
 import com.thefuh.markinbook.routes.schools.students.StudentsRepository
+import com.thefuh.markinbook.routes.schools.students.lessons.homeworks.HomeworksRepository
 import com.thefuh.markinbook.routes.schools.teachers.TeachersRepository
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -25,6 +26,7 @@ fun Route.lessons(
     studentsRepository: StudentsRepository,
     teachersRepository: TeachersRepository,
     lessonsRepository: LessonsRepository,
+    homeworksRepository: HomeworksRepository,
     groupsRepository: GroupsRepository,
     disciplinesRepository: DisciplinesRepository,
 ) {
@@ -157,13 +159,15 @@ fun Route.lessons(
 
                 val durationInMinutes = parameters[LessonsLocation.Add.ARG_DURATION_IN_MINUTES]?.toIntOrNull()!!
 
+                val homeworkEntity = dbQuery { homeworksRepository.add() }
                 val addedLesson = dbQuery {
                     lessonsRepository.add(
                         teacherEntity,
                         groupEntity,
                         disciplineEntity,
                         start,
-                        durationInMinutes
+                        durationInMinutes,
+                        homeworkEntity
                     ).toTeacherLesson()
                 }
                 call.respond(HttpStatusCode.OK, addedLesson)
