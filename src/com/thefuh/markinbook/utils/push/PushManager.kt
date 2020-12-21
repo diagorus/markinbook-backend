@@ -22,11 +22,12 @@ class PushManager(
         private const val KEY_DISCIPLINE_TITLE = "disciplineTitle"
     }
 
-    suspend fun pushHomeworkMark(userId: Int, homeworkId: Int, disciplineTitle: String) {
+    suspend fun pushHomeworkMark(userId: Int, lessonId: Int, homeworkId: Int, disciplineTitle: String) {
         val token = getUserToken(userId)
         token?.let {
             val message = Message.builder()
                 .putData(KEY_TYPE, PushType.HOMEWORK_MARK.title)
+                .putData(KEY_LESSON_ID, lessonId.toString())
                 .putData(KEY_HOMEWORK_ID, homeworkId.toString())
                 .putData(KEY_DISCIPLINE_TITLE, disciplineTitle)
                 .setToken(token)
@@ -50,11 +51,12 @@ class PushManager(
         }
     }
 
-    suspend fun pushHomeworkAdded(groupId: Int, homeworkId: Int, disciplineTitle: String) {
+    suspend fun pushHomeworkAdded(groupId: Int, lessonId: Int, homeworkId: Int, disciplineTitle: String) {
         val tokens = getGroupUserTokens(groupId)
         if (tokens.isNotEmpty()) {
             val message = MulticastMessage.builder()
                 .putData(KEY_TYPE, PushType.HOMEWORK_ADDED.title)
+                .putData(KEY_LESSON_ID, lessonId.toString())
                 .putData(KEY_HOMEWORK_ID, homeworkId.toString())
                 .putData(KEY_DISCIPLINE_TITLE, disciplineTitle)
                 .addAllTokens(tokens)
@@ -65,7 +67,8 @@ class PushManager(
         }
     }
 
-    private suspend fun getUserToken(userId: Int) = dbQuery { pushTokensRepository.getByUserId(userId).firstOrNull()?.token }
+    private suspend fun getUserToken(userId: Int) =
+        dbQuery { pushTokensRepository.getByUserId(userId).firstOrNull()?.token }
 
     private suspend fun getGroupUserTokens(groupId: Int) = dbQuery {
         val userIds = groupsRepository.getById(groupId)!!.students.map { it.id.value }

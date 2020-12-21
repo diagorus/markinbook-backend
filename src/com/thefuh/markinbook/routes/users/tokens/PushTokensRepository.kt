@@ -24,7 +24,7 @@ class PushTokensRepository {
     }
 
     fun getTokensByUserIds(userIds: List<Int>): List<String> {
-        return PushTokensTable.slice(PushTokensTable.token).select { PushTokensTable.id inList userIds }.map { it[PushTokensTable.token] }
+        return PushTokensTable.slice(PushTokensTable.token).select { PushTokensTable.userId inList userIds }.map { it[PushTokensTable.token] }
     }
 }
 

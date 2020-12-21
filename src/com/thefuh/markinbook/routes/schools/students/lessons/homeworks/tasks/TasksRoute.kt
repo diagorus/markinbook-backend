@@ -32,7 +32,7 @@ fun Route.tasks(
         val lessonEntity = dbQuery { lessonsRepository.getById(lessonId) }!!
         val groupId = dbQuery { lessonEntity.group.id.value }
         val disciplineTitle = dbQuery { lessonEntity.discipline.title }
-        pushManager.pushHomeworkAdded(groupId, homeworkId, disciplineTitle)
+        pushManager.pushHomeworkAdded(groupId, lessonId, homeworkId, disciplineTitle)
         call.respond(HttpStatusCode.OK, addedTask)
     }
 }

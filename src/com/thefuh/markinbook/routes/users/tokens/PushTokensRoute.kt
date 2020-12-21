@@ -1,7 +1,9 @@
 package com.thefuh.markinbook.routes.users.tokens
 
 import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.auth.Role
 import com.thefuh.markinbook.auth.UserPrincipal
+import com.thefuh.markinbook.auth.withRole
 import com.thefuh.markinbook.routes.users.UsersLocation
 import com.thefuh.markinbook.routes.users.UsersLocation.PushTokens
 import com.thefuh.markinbook.routes.users.UsersRepository
@@ -19,18 +21,20 @@ fun Route.pushTokens(
     pushTokensRepository: PushTokensRepository,
 ) {
     authenticate {
-        post<PushTokens.Add> {
-            val userPrincipal = call.principal<UserPrincipal>()!!
-            val token = call.receive<Parameters>()[PushTokens.Add.ARG_TOKEN]!!
-            dbQuery {
-                val userEntity = usersRepository.getById(userPrincipal.userId)!!
+        withRole(Role.STUDENT) {
+            post<PushTokens.Add> {
+                val userPrincipal = call.principal<UserPrincipal>()!!
+                val token = call.receive<Parameters>()[PushTokens.Add.ARG_TOKEN]!!
+                dbQuery {
+                    val userEntity = usersRepository.getById(userPrincipal.userId)!!
 
-                val previousTokens = pushTokensRepository.getByUserId(userPrincipal.userId)
-                previousTokens.forEach { it.delete() }
+                    val previousTokens = pushTokensRepository.getByUserId(userPrincipal.userId)
+                    previousTokens.forEach { it.delete() }
 
-                pushTokensRepository.add(userEntity, token)
+                    pushTokensRepository.add(userEntity, token)
+                }
+                call.respond(HttpStatusCode.OK)
             }
-            call.respond(HttpStatusCode.OK)
         }
     }
 }
