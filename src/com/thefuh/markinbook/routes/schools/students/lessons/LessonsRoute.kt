@@ -5,7 +5,7 @@ import com.thefuh.markinbook.auth.UserPrincipal
 import com.thefuh.markinbook.auth.withAnyRole
 import com.thefuh.markinbook.auth.withRole
 import com.thefuh.markinbook.data.Day
-import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.utils.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.LessonsLocation
 import com.thefuh.markinbook.routes.schools.disciplines.DisciplinesRepository
 import com.thefuh.markinbook.routes.schools.groups.GroupsRepository

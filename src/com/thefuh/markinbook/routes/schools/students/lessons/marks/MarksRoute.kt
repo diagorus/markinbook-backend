@@ -1,6 +1,6 @@
 package com.thefuh.markinbook.routes.schools.students.lessons.marks
 
-import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.utils.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.auth.Role
 import com.thefuh.markinbook.auth.withRole
 import com.thefuh.markinbook.routes.schools.LessonsLocation.Lesson.Homeworks.Homework

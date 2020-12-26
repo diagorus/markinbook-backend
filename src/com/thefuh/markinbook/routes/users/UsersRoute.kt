@@ -2,8 +2,7 @@ package com.thefuh.markinbook.routes.users
 
 import com.thefuh.markinbook.auth.JwtService
 import com.thefuh.markinbook.auth.Role
-import com.thefuh.markinbook.DatabaseFactory.dbQuery
-import com.thefuh.markinbook.auth.withRole
+import com.thefuh.markinbook.utils.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.SchoolsRepository
 import com.thefuh.markinbook.routes.schools.students.StudentsRepository
 import com.thefuh.markinbook.routes.schools.groups.GroupsRepository

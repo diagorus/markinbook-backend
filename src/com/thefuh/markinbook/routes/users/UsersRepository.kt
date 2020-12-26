@@ -1,6 +1,7 @@
 package com.thefuh.markinbook.routes.users
 
 import com.thefuh.markinbook.auth.Role
+import com.thefuh.markinbook.data.User
 import com.thefuh.markinbook.utils.PGEnum
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
@@ -43,4 +44,13 @@ class UserEntity(id: EntityID<Int>) : IntEntity(id) {
     var email by UsersTable.email
     var passwordHash by UsersTable.passwordHash
     var role by UsersTable.role
+}
+
+fun UserEntity.toUser(): User {
+    return User(
+        id.value,
+        email,
+        passwordHash,
+        role
+    )
 }

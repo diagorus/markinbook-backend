@@ -1,7 +1,7 @@
 package com.thefuh.markinbook.routes.schools.groups
 
 import com.thefuh.markinbook.data.Group
-import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.utils.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.SchoolsRepository
 import com.thefuh.markinbook.routes.schools.SchoolsLocation.School.Groups
 import com.thefuh.markinbook.routes.schools.students.toStudents

@@ -1,6 +1,6 @@
 package com.thefuh.markinbook.routes.schools.students.lessons.homeworks.tasks
 
-import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.utils.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.LessonsLocation
 import com.thefuh.markinbook.routes.schools.LessonsLocation.Lesson.Homeworks.Homework.Tasks.Add.Companion.ARG_DESCRIPTION
 import com.thefuh.markinbook.routes.schools.students.lessons.LessonsRepository

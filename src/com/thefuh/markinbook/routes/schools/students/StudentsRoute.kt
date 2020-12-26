@@ -1,7 +1,7 @@
 package com.thefuh.markinbook.routes.schools.students
 
 import com.thefuh.markinbook.auth.UserPrincipal
-import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.utils.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.StudentsLocation
 import com.thefuh.markinbook.utils.copyToSuspend
 import io.ktor.application.*

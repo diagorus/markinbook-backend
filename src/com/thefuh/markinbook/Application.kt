@@ -4,7 +4,7 @@ import com.thefuh.markinbook.auth.JwtService
 import com.thefuh.markinbook.auth.UserPrincipal
 import com.thefuh.markinbook.auth.RoleBasedAuthorization
 import com.thefuh.markinbook.auth.hash
-import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.utils.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.disciplines.DisciplinesRepository
 import com.thefuh.markinbook.routes.schools.SchoolsRepository
 import com.thefuh.markinbook.routes.schools.students.StudentsRepository
@@ -47,7 +47,9 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseOptions
 import com.thefuh.markinbook.routes.users.tokens.PushTokensRepository
 import com.thefuh.markinbook.routes.users.tokens.pushTokens
+import com.thefuh.markinbook.utils.DatabaseFactory
 import com.thefuh.markinbook.utils.push.PushManager
+import java.io.FileInputStream
 
 const val API_NAME = "api"
 const val API_VERSION = "v1"
@@ -57,16 +59,16 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @KtorExperimentalAPI
 @KtorExperimentalLocationsAPI
 fun Application.module() {
+    val serviceAccount = FileInputStream("markinbook-firebase-adminsdk-9zcyc-44bc35f89e.json")
     val options = FirebaseOptions.builder()
-        .setCredentials(GoogleCredentials.getApplicationDefault())
-        .setDatabaseUrl("https://<DATABASE_NAME>.firebaseio.com/")
+        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+        .setDatabaseUrl("https://markinbook-default-rtdb.firebaseio.com/")
         .build()
     FirebaseApp.initializeApp(options)
 
     install(CallLogging) {
         level = Level.INFO
     }
-//    install(DefaultHeaders)
     install(ContentNegotiation) {
         json(
             Json(DefaultJson) {
@@ -163,7 +165,6 @@ fun Application.module() {
 //        log.info("route: $it")
 //    }
 }
-
 
 fun allRoutes(root: Route): List<Route> {
     return listOf(root) + root.children.flatMap { allRoutes(it) }

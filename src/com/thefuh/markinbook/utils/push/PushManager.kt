@@ -2,7 +2,7 @@ package com.thefuh.markinbook.utils.push
 
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.Message
-import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.utils.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.users.tokens.PushTokensRepository
 
 import com.google.firebase.messaging.MulticastMessage
@@ -63,7 +63,6 @@ class PushManager(
                 .build()
             val response = FirebaseMessaging.getInstance().sendMulticast(message)
             log.info("${response.successCount} messages were sent successfully")
-
         }
     }
 

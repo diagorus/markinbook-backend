@@ -1,6 +1,6 @@
 package com.thefuh.markinbook.routes.schools.teachers
 
-import com.thefuh.markinbook.DatabaseFactory
+import com.thefuh.markinbook.utils.DatabaseFactory
 import com.thefuh.markinbook.auth.UserPrincipal
 import com.thefuh.markinbook.routes.schools.TeachersLocation
 import io.ktor.application.*

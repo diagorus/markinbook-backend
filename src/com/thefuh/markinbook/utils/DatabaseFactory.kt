@@ -1,4 +1,4 @@
-package com.thefuh.markinbook
+package com.thefuh.markinbook.utils
 
 import com.thefuh.markinbook.routes.schools.disciplines.DisciplinesTable
 import com.thefuh.markinbook.routes.schools.groups.GroupsTable

@@ -1,6 +1,6 @@
 package com.thefuh.markinbook.routes.schools
 
-import com.thefuh.markinbook.DatabaseFactory.dbQuery
+import com.thefuh.markinbook.utils.DatabaseFactory.dbQuery
 import com.thefuh.markinbook.routes.schools.disciplines.DISCIPLINE_PROBLEMS
 import io.ktor.application.*
 import io.ktor.http.*
